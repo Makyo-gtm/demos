@@ -4,11 +4,18 @@
 (function (root) {
   'use strict';
 
+  // The design spec called for a 400-800ms "thinking" delay; the user, who
+  // is the one recording, asked for ~3s instead - long enough that the
+  // change visibly lands as a response to the request rather than appearing
+  // instantly alongside it. The "Thinking..." indicator shows throughout,
+  // so the wait reads as work happening, not as a frozen UI.
+  var THINKING_MS = 3000;
+
   var SCENARIO_STEPS = [
     {
       id: 'highlight-overdue',
       triggerKeywords: ['red', 'stand out', 'highlight'],
-      thinkingMs: 700,
+      thinkingMs: THINKING_MS,
       reply: 'Done — overdue invoices are now highlighted in red.',
       mutation: function (store) {
         store.setState(function (s) { return Object.assign({}, s, { highlightOverdue: true }); });
@@ -17,7 +24,7 @@
     {
       id: 'sort-most-overdue',
       triggerKeywords: ['sort', 'most overdue', 'order', 'first'],
-      thinkingMs: 700,
+      thinkingMs: THINKING_MS,
       reply: 'Sorted — the most overdue invoices are now at the top.',
       mutation: function (store) {
         store.setState(function (s) { return Object.assign({}, s, { sortMode: 'mostOverdue' }); });
