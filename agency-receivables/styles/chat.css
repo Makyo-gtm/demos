@@ -1,0 +1,31 @@
+.chat-toggle {
+  position: fixed; bottom: var(--space-5); right: var(--space-5);
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--color-blue); color: var(--color-white); border: none;
+  font-size: 24px; cursor: pointer; box-shadow: 0 4px 12px rgba(15,23,42,0.3); z-index: 1000;
+}
+
+.chat-panel {
+  position: fixed; bottom: calc(var(--space-5) + 68px); right: var(--space-5);
+  width: 340px; max-width: 90vw; height: 440px; max-height: 70vh;
+  background: var(--color-white); border-radius: var(--radius); box-shadow: 0 8px 30px rgba(15,23,42,0.35);
+  display: flex; flex-direction: column; overflow: hidden; z-index: 1000;
+}
+.chat-panel--hidden { display: none; }
+
+.chat-panel__header { background: var(--color-navy); color: var(--color-white); padding: var(--space-3) var(--space-4); display: flex; justify-content: space-between; align-items: center; }
+.chat-panel__title { font-family: var(--font-heading); font-weight: 700; font-size: 15px; }
+.chat-panel__subtitle { font-size: 12px; opacity: 0.7; }
+.chat-panel__restart { font-size: 11px; background: rgba(255,255,255,0.12); color: var(--color-white); border: none; border-radius: var(--radius); padding: var(--space-1) var(--space-2); cursor: pointer; }
+
+.chat-panel__messages { flex: 1; overflow-y: auto; padding: var(--space-3); display: flex; flex-direction: column; gap: var(--space-2); }
+.chat-message { display: flex; gap: var(--space-2); align-items: flex-start; font-size: 13px; }
+.chat-message--user { flex-direction: row-reverse; }
+.chat-message__avatar { flex-shrink: 0; }
+.chat-message__bubble { background: var(--color-gray-100); padding: var(--space-2) var(--space-3); border-radius: var(--radius); max-width: 220px; }
+.chat-message--user .chat-message__bubble { background: var(--color-blue); color: var(--color-white); }
+.chat-message__bubble--thinking { opacity: 0.6; font-style: italic; }
+
+.chat-panel__input-row { display: flex; gap: var(--space-2); padding: var(--space-3); border-top: var(--border); }
+.chat-panel__input { flex: 1; border: var(--border); border-radius: var(--radius); padding: var(--space-2); font-family: var(--font-body); font-size: 13px; }
+.chat-panel__send { background: var(--color-blue); color: var(--color-white); border: none; border-radius: var(--radius); padding: var(--space-2) var(--space-3); font-weight: 600; cursor: pointer; }

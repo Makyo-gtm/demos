@@ -1,0 +1,89 @@
+:root {
+  /* exact values from the recon recording, docs/research/2026-09-09-recon-recording-findings.md */
+  --color-navy: #0f172a;
+  --color-blue: #2563eb;
+  --color-teal: #0891b2;
+  --color-offwhite: #f8fafc;
+  --color-white: #ffffff;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;   /* recessed "well" gray - canvas gutter behind the frame, inner stat boxes; confirmed via pixel-sampling kept_0045.jpg, darker than gray-100 */
+  --color-gray-300: #cbd5e1;
+  --color-gray-500: #64748b;
+  --color-red: #dc2626;
+  --color-red-bg: #fee2e2;
+  --color-blue-bg: #eff6ff;
+  --color-blue-light: #6d5ce8;   /* the lavender/indigo "Start Building" button seen in the real recording */
+  --color-teal-bg: #ecfeff;
+
+  --font-heading: 'Space Grotesk', -apple-system, sans-serif;
+  --font-body: 'IBM Plex Sans', -apple-system, sans-serif;
+
+  --radius: 2px;           /* "Sharp" corners — the theme applied to the GENERATED app only (Dashboard/Clients/Invoices/Follow-Ups) */
+  --border: 1px solid var(--color-gray-300); /* "Hairline" borders — generated-app screens only */
+
+  /* Makyo's own product shell (Create new app / Describe your app / build
+     sequence) is a SEPARATE design system from the theme it applies to
+     generated apps — confirmed by reading the real saved page's CSS
+     directly (shadcn/ui tokens): --radius:.625rem (rounded-xl ≈ 12-14px,
+     not sharp), --border:#e5e5e5, --muted-foreground:#737373,
+     --foreground:#0a0a0a. Used only by the .describe-*/.create-choice-*/
+     .gen-*/.ready-modal-* rules in generate.css. */
+  --shell-radius: 0.625rem;
+  --shell-radius-lg: 0.75rem;
+  --shell-radius-xl: 1rem;
+  /* Confirmed via the real saved page: --border and --sidebar-border are
+     the literal same oklch(0.850 0.007 245.0) value, not two different
+     grays - so this uses the same computed hex as --shell-sidebar-border
+     below rather than the earlier, separate #e5e5e5 rough guess (which
+     was never re-derived once the sidebar-border color was corrected). */
+  --shell-border: 1px solid #cbcbd1;
+  --shell-fg: #0a0a0a;
+  --shell-muted-fg: #737373;
+  --shell-bg: #ffffff;
+  /* The real Makyo product shell never uses the generated app's branded
+     fonts (Space Grotesk/IBM Plex Sans) — confirmed by reading the real
+     saved page's own computed font-family declaration directly: a plain
+     system-ui stack, copied verbatim below. An earlier version of this
+     file let the shell silently inherit the generated-app's body/heading
+     fonts from theme.css's global body/h1-h3 rules, which is why the
+     sidebar/topbar text read as a visibly different (and lighter-looking)
+     typeface than the real interface. */
+  --shell-font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  /* The sidebar/topbar dividers use a separate, slightly more visible
+     border token (--sidebar-border) than plain content borders in the
+     real page — confirmed via the real org-level theme override
+     (oklch(0.850 0.007 245.0), a near-gray with a faint cool tint).
+     OKLCH's lightness scale doesn't map 1:1 to sRGB gamma the way an
+     early version of this file assumed (reusing the flatter #e5e5e5
+     everywhere), which read visibly too faint against the real page. */
+  --shell-sidebar-border: 1px solid #cbcbd1;
+  /* The real sidebar isn't pure white — it's oklch(0.980 0.007 245.0), a
+     barely-tinted cool off-white, confirmed from the real page's own
+     --sidebar custom property (light-mode block; a separate dark-mode
+     value also exists but this app is light-themed throughout). Computed
+     to sRGB with the standard OKLab conversion matrices, not eyeballed —
+     the main content area's own --background is confirmed separately to
+     be true oklch(1.000 0.000 245.0), i.e. actual #ffffff, so --shell-bg
+     stays correct as-is; only the sidebar itself needed its own token. */
+  --shell-sidebar-bg: #f5f9fd;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--color-gray-100);
+  color: var(--color-navy);
+  font-family: var(--font-body);
+}
+
+h1, h2, h3 { font-family: var(--font-heading); font-weight: 700; margin: 0; }

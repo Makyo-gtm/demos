@@ -1,0 +1,188 @@
+/* builder.css — Makyo's own app-builder/IDE chrome, wrapped around the
+   actual app content (mounted by views.js into .builder-canvas__frame).
+   Uses the same --shell-* tokens as generate.css since this is the same
+   "Makyo's own product" design system, not the generated app's theme. */
+
+/* height:100vh, not min-height - the real root cause of the panels
+   footer being invisible: min-height only sets a floor, so with a
+   9-screen list the whole shell just grew past the viewport (998px on a
+   950px-tall window) with nothing capping it, rather than the screens
+   list scrolling internally like the real product. Confirmed via an
+   actual bounding-box measurement before fixing this, not by guessing
+   which rule was responsible. */
+.builder-shell { height: 100vh; display: flex; flex-direction: column; font-family: var(--shell-font); color: var(--shell-fg); background: var(--shell-bg); overflow: hidden; }
+
+/* ---- Top bar ---- */
+.builder-topbar { height: 64px; flex-shrink: 0; display: flex; align-items: center; gap: var(--space-3); padding: 0 var(--space-4); border-bottom: var(--shell-sidebar-border); }
+.builder-topbar__left { display: flex; align-items: center; gap: var(--space-3); }
+.builder-topbar__back { color: var(--shell-muted-fg); display: flex; cursor: pointer; }
+.builder-topbar__appicon { width: 36px; height: 36px; border-radius: var(--shell-radius-lg); background: rgb(44, 62, 80); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.builder-topbar__appname { font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 4px; color: var(--shell-fg); }
+.builder-topbar__appname svg { color: var(--shell-muted-fg); }
+.builder-topbar__appversion { font-size: 11px; color: #c2793a; font-weight: 500; }
+.builder-topbar__tabs { display: flex; align-items: center; gap: 2px; background: var(--color-gray-100); border-radius: var(--shell-radius-lg); padding: 3px; margin-left: var(--space-4); }
+.builder-topbar__tab { font-size: 13px; font-weight: 600; padding: 5px var(--space-3); border-radius: var(--shell-radius); color: var(--shell-muted-fg); }
+.builder-topbar__tab--active { background: var(--shell-bg); color: var(--shell-fg); box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+.builder-topbar__right { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
+.builder-topbar__dot { width: 7px; height: 7px; border-radius: 50%; background: #f97316; }
+.builder-topbar__icon-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--shell-muted-fg); border-radius: var(--shell-radius); cursor: pointer; }
+.builder-topbar__textbtn { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--shell-fg); border: var(--shell-border); border-radius: var(--shell-radius-lg); padding: 0 var(--space-3); height: 32px; cursor: pointer; }
+.builder-topbar__publish { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--color-white); background: var(--color-blue-light); border: none; border-radius: var(--shell-radius-lg); padding: 0 var(--space-3); height: 32px; cursor: pointer; }
+.builder-topbar__avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--color-gray-300); flex-shrink: 0; }
+
+/* ---- Notice bar ---- */
+.builder-noticebar { height: 32px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-4); font-size: 12px; color: var(--shell-muted-fg); border-bottom: var(--shell-sidebar-border); background: #fffbeb; }
+.builder-noticebar__release { color: var(--color-blue-light); font-weight: 600; cursor: pointer; }
+
+/* ---- Body layout ---- */
+.builder-body { flex: 1; min-height: 0; display: flex; position: relative; }
+
+/* ---- Left icon rail ---- */
+/* Real sidebar/rail areas use the same barely-tinted off-white already
+   established for .org-sidebar (--shell-sidebar-bg, an OKLCH-derived
+   value, not pure white) - this file never applied that token, so the
+   rail/panels read as plain white where the real chrome has a subtle
+   tint. Found via a direct background-color sample comparison. */
+.builder-rail { width: 64px; flex-shrink: 0; background: var(--shell-sidebar-bg); border-right: var(--shell-sidebar-border); display: flex; flex-direction: column; align-items: center; padding: var(--space-3) 0; gap: var(--space-2); }
+.builder-rail__item { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 56px; padding: 6px 2px; border-radius: var(--shell-radius); color: var(--shell-muted-fg); cursor: pointer; }
+.builder-rail__item--active { background: var(--color-gray-100); color: var(--shell-fg); }
+.builder-rail__icon { display: flex; }
+.builder-rail__label { font-size: 9px; font-weight: 600; text-align: center; line-height: 1.15; }
+
+/* ---- Panels column (AI App Generation / Add Primitives / Screens) ---- */
+/* overflow:hidden (not auto) on this column itself - only
+   .builder-screens-list scrolls internally, so the user-footer row
+   stays pinned at the bottom rather than scrolling away with it. */
+/* min-height:0 is required here too, not just on .builder-panel--screens
+   - a flex item's default min-height is auto (grows to fit content), so
+   without this the whole column grew to ~998px content height and
+   pushed past a 950px viewport, taking the footer below it off-screen
+   entirely. Confirmed via an actual bounding-box check, not by re-
+   reading the rule. */
+.builder-panels { width: 300px; flex-shrink: 0; min-height: 0; background: var(--shell-sidebar-bg); border-right: var(--shell-sidebar-border); display: flex; flex-direction: column; overflow: hidden; }
+.builder-panel__header { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-3) var(--space-3); border-bottom: var(--shell-sidebar-border); font-size: 13px; font-weight: 700; }
+.builder-panel__header-icon { display: flex; color: var(--shell-muted-fg); }
+.builder-panel__header-label { flex: 1; }
+.builder-panel__header-actions { display: flex; align-items: center; gap: var(--space-2); color: var(--shell-muted-fg); }
+.builder-panel--screens { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.builder-screens-toolbar { display: flex; align-items: center; gap: 6px; padding: var(--space-3); }
+.builder-screens-search { flex: 1; display: flex; align-items: center; gap: 6px; border: var(--shell-border); border-radius: var(--shell-radius); padding: 6px var(--space-2); color: var(--shell-muted-fg); }
+.builder-screens-search input { border: none; outline: none; font-size: 12px; font-family: inherit; width: 100%; color: var(--shell-fg); }
+.builder-screens-toolbar__btn { width: 28px; height: 28px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border: var(--shell-border); border-radius: var(--shell-radius); color: var(--shell-muted-fg); cursor: pointer; }
+.builder-screens-label { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: var(--shell-muted-fg); padding: 0 var(--space-3) var(--space-2); }
+.builder-screens-count { background: var(--color-gray-100); border-radius: 10px; padding: 1px 6px; font-size: 10px; }
+.builder-screens-list { flex: 1; overflow-y: auto; }
+.builder-screen-row { padding: var(--space-2) var(--space-3); border-top: var(--shell-sidebar-border); font-size: 12px; }
+.builder-screen-row--active { background: var(--color-gray-100); }
+.builder-screen-row__main { display: flex; align-items: center; gap: 6px; }
+.builder-screen-row__drag, .builder-screen-row__lock, .builder-screen-row__eye, .builder-screen-row__kebab { color: var(--shell-muted-fg); flex-shrink: 0; display: flex; }
+.builder-screen-row__icon { color: var(--shell-muted-fg); flex-shrink: 0; display: flex; }
+.builder-screens-list-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.builder-screens-list-wrap[hidden] { display: none; }
+
+/* Screen Settings detail view - see builder.js's screenSettingsHtml comment
+   for the evidence this is built from (a text description, not a screenshot
+   of this exact panel - lower confidence than the rest of this file). */
+.screen-settings { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; }
+.screen-settings[hidden] { display: none; }
+.screen-settings__header { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-3); border-bottom: var(--shell-sidebar-border); font-size: 13px; font-weight: 700; }
+.screen-settings__back, .screen-settings__close { color: var(--shell-muted-fg); display: flex; cursor: pointer; }
+.screen-settings__icon { color: var(--shell-muted-fg); display: flex; }
+.screen-settings__title { flex: 1; }
+.screen-settings__tabs { display: flex; gap: var(--space-4); padding: 0 var(--space-3); border-bottom: var(--shell-sidebar-border); }
+.screen-settings__tab { font-size: 12px; font-weight: 600; color: var(--shell-muted-fg); padding: var(--space-2) 0; cursor: pointer; border-bottom: 2px solid transparent; }
+.screen-settings__tab--active { color: var(--shell-fg); border-bottom-color: var(--shell-fg); }
+.screen-settings__section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: var(--shell-muted-fg); padding: var(--space-3) var(--space-3) var(--space-2); }
+.screen-settings__field { display: flex; flex-direction: column; gap: 4px; padding: 0 var(--space-3) var(--space-3); font-size: 12px; color: var(--shell-muted-fg); }
+.screen-settings__field input { font-family: inherit; font-size: 13px; color: var(--shell-fg); border: var(--shell-border); border-radius: var(--shell-radius); padding: 6px var(--space-2); background: var(--shell-bg); }
+.screen-settings__field input:disabled { color: var(--shell-muted-fg); background: var(--color-gray-100); }
+.screen-settings__icon-preview { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border: var(--shell-border); border-radius: var(--shell-radius); color: var(--shell-muted-fg); }
+.builder-screen-row__meta { flex: 1; min-width: 0; }
+.builder-screen-row__name { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.builder-screen-row__path { font-size: 10px; color: var(--shell-muted-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.builder-screen-row__tag { display: inline-block; margin-top: 4px; margin-left: 40px; font-size: 9px; font-weight: 700; border: var(--shell-border); border-radius: var(--shell-radius); padding: 2px 6px; color: var(--shell-muted-fg); white-space: nowrap; }
+
+/* ---- Canvas (toolbar + the actual mounted app content) ---- */
+.builder-canvas { flex: 1; min-width: 0; display: flex; flex-direction: column; background: var(--color-gray-200); }
+.builder-canvas-toolbar { height: 48px; flex-shrink: 0; display: flex; align-items: center; gap: var(--space-3); padding: 0 var(--space-3); border-bottom: var(--shell-sidebar-border); background: var(--shell-bg); }
+.builder-canvas-toolbar__icon-btn { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; color: var(--shell-muted-fg); border-radius: var(--shell-radius); cursor: pointer; }
+.builder-canvas-toolbar__icon-btn--active { background: var(--color-gray-100); color: var(--shell-fg); }
+.builder-canvas-toolbar__devices { display: flex; align-items: center; gap: 4px; margin: 0 auto; }
+.builder-canvas-toolbar__right { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
+.builder-canvas-toolbar__viewing { display: flex; align-items: center; gap: 6px; font-size: 12px; border: var(--shell-border); border-radius: var(--shell-radius-lg); padding: 0 var(--space-2); height: 30px; color: var(--shell-fg); }
+.builder-canvas-toolbar__viewing-avatar { width: 18px; height: 18px; border-radius: 50%; background: var(--color-gray-300); }
+.builder-canvas-toolbar__designpreview { display: flex; align-items: center; gap: var(--space-3); font-size: 12px; font-weight: 600; color: var(--shell-muted-fg); }
+.builder-canvas-toolbar__designpreview--active { color: var(--color-blue-light); border-bottom: 2px solid var(--color-blue-light); padding-bottom: 2px; }
+/* Flush against the canvas, no floating-card margin/shadow/radius - the
+   real app content sits directly in the canvas area with no gap around
+   it, confirmed by rendering the margined version and comparing. */
+.builder-canvas__frame { flex: 1; min-height: 0; overflow: auto; background: var(--color-white); }
+
+/* ---- AI Chat floating panel ----
+   Real: a floating, draggable overlay panel (not embedded in the panels
+   column), positioned over the panels/canvas boundary - confirmed via
+   real recording frames kept_0062/kept_0063. Hidden by default, toggled
+   by clicking "AI Chat" in the rail. Same header-action icon pattern
+   (pin/external-link/close) as the other panels in this file. */
+.ai-chat-panel {
+  position: absolute; top: 56px; left: 350px; width: 380px; max-height: calc(100% - 80px);
+  display: flex; flex-direction: column; background: var(--shell-bg); border: var(--shell-border);
+  border-radius: var(--shell-radius-lg); box-shadow: 0 12px 32px rgba(0,0,0,0.18); z-index: 20;
+}
+.ai-chat-panel--hidden { display: none; }
+.ai-chat-panel__header { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); border-bottom: var(--shell-sidebar-border); font-size: 13px; font-weight: 700; cursor: move; }
+.ai-chat-panel__drag, .ai-chat-panel__header-icon { color: var(--shell-muted-fg); display: flex; flex-shrink: 0; }
+.ai-chat-panel__title { flex: 1; }
+.ai-chat-panel__header-actions { display: flex; align-items: center; gap: var(--space-2); color: var(--shell-muted-fg); }
+.ai-chat-panel__close { display: flex; cursor: pointer; }
+.ai-chat-panel__assistant-row { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-3) var(--space-3) var(--space-2); }
+.ai-chat-panel__assistant-icon { color: var(--shell-muted-fg); display: flex; }
+.ai-chat-panel__assistant-name { flex: 1; font-weight: 700; font-size: 14px; }
+.ai-chat-panel__assistant-actions { display: flex; align-items: center; gap: 6px; color: var(--shell-muted-fg); }
+.ai-chat-panel__credits-row { display: flex; align-items: center; gap: var(--space-2); padding: 0 var(--space-3) var(--space-2); font-size: 12px; color: var(--shell-muted-fg); }
+.ai-chat-panel__buy { color: var(--color-blue-light); font-weight: 700; }
+.ai-chat-panel__banner { display: flex; align-items: center; justify-content: space-between; margin: 0 var(--space-3) var(--space-3); font-size: 12px; font-weight: 600; color: var(--color-blue-light); }
+.ai-chat-panel__restart { font-size: 11px; font-weight: 600; color: var(--shell-muted-fg); background: none; border: var(--shell-border); border-radius: var(--shell-radius); padding: 2px var(--space-2); cursor: pointer; }
+.ai-chat-panel__messages { flex: 1; min-height: 120px; max-height: 320px; overflow-y: auto; padding: 0 var(--space-3); display: flex; flex-direction: column; gap: var(--space-2); }
+.ai-chat-message { font-size: 13px; padding: var(--space-2) var(--space-3); border-radius: var(--shell-radius-lg); max-width: 88%; }
+.ai-chat-message--assistant { background: var(--color-gray-100); color: var(--shell-fg); align-self: flex-start; }
+.ai-chat-message--user { background: var(--color-blue-light); color: var(--color-white); align-self: flex-end; }
+.ai-chat-message--thinking { opacity: 0.6; font-style: italic; }
+.ai-chat-panel__input-row { display: flex; align-items: flex-end; gap: var(--space-2); padding: var(--space-3); border-top: var(--shell-sidebar-border); }
+.ai-chat-panel__input { flex: 1; resize: none; height: 44px; border: var(--shell-border); border-radius: var(--shell-radius); padding: var(--space-2); font-family: inherit; font-size: 13px; color: var(--shell-fg); outline: none; }
+.ai-chat-panel__attach { color: var(--shell-muted-fg); display: flex; padding-bottom: var(--space-2); cursor: pointer; }
+.ai-chat-panel__send { width: 32px; height: 32px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: var(--color-blue-light); color: var(--color-white); border: none; border-radius: var(--shell-radius); cursor: pointer; }
+.ai-chat-panel__send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ---- Panels column footer: logged-in user + Built on Makyo badge ----
+   Real, pinned at the bottom of the panels column - confirmed via real
+   recording frames, missing entirely until a direct side-by-side
+   screenshot comparison caught it. */
+.builder-panels__footer { flex-shrink: 0; border-top: var(--shell-sidebar-border); padding: var(--space-3); }
+.builder-panels__user { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); }
+.builder-panels__avatar { width: 32px; height: 32px; border-radius: 50%; background: #f5c518; flex-shrink: 0; }
+.builder-panels__user-meta { flex: 1; min-width: 0; }
+.builder-panels__user-name { font-weight: 700; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.builder-panels__user-role { font-size: 11px; color: var(--shell-muted-fg); }
+.builder-panels__power { color: var(--shell-muted-fg); display: flex; flex-shrink: 0; cursor: pointer; }
+.builder-panels__badge { display: flex; align-items: center; gap: 6px; background: var(--shell-fg); color: var(--color-white); font-weight: 700; font-size: 13px; border-radius: var(--shell-radius-lg); padding: var(--space-2) var(--space-3); }
+
+/* ---- Interactive feedback, broadly ----
+   Almost nothing in this chrome had any hover/click feedback - every
+   icon button and toggle was visually dead even though it looks
+   clickable, which reads as broken during a live recording where a
+   presenter's cursor moves across the screen. Added generically rather
+   than one rule per element, so this covers every icon-button-style
+   control at once, present and future. */
+.builder-topbar__icon-btn:hover, .builder-topbar__textbtn:hover, .builder-topbar__back:hover,
+.builder-canvas-toolbar__icon-btn:hover, .builder-screens-toolbar__btn:hover,
+.builder-panel__header-actions svg:hover, .ai-chat-panel__header-actions svg:hover,
+.ai-chat-panel__assistant-actions svg:hover, .builder-panels__power:hover,
+.builder-screen-row__kebab:hover, .builder-screen-row__eye:hover, .builder-screen-row__lock:hover,
+.builder-noticebar__release:hover { background: var(--color-gray-100); border-radius: var(--shell-radius); }
+.builder-topbar__publish:hover { filter: brightness(1.08); }
+.builder-topbar__icon-btn:active, .builder-canvas-toolbar__icon-btn:active,
+.builder-screens-toolbar__btn:active, .builder-rail__item:active { transform: scale(0.94); }
+.builder-topbar__tab:hover, .builder-canvas-toolbar__designpreview span:hover { cursor: pointer; }
+.builder-screen-row { cursor: pointer; }
+.builder-screen-row:hover { background: var(--color-gray-100); }

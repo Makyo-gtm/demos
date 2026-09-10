@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agency Receivables</title>
+  <link rel="stylesheet" href="styles/fonts.css" />
+  <link rel="stylesheet" href="styles/theme.css" />
+  <link rel="stylesheet" href="styles/generate.css" />
+  <link rel="stylesheet" href="styles/app.css" />
+  <link rel="stylesheet" href="styles/builder.css" />
+  <link rel="stylesheet" href="styles/chat.css" />
+  <style>
+    .is-hidden { display: none !important; }
+    #app-root { min-height: 100vh; background: var(--color-gray-100); }
+  </style>
+</head>
+<body>
+  <div id="generate-root" class="generate-screen"></div>
+  <div id="app-root" class="is-hidden"></div>
+  <div id="chat-root" class="is-hidden"></div>
+
+  <!-- Plain classic <script> tags, in dependency order — no type="module",
+       so this works from a file:// double-click with no server and no CORS issue. -->
+  <script src="js/seed.js"></script>
+  <script src="js/derive.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/scenario.js"></script>
+  <script src="js/views.js"></script>
+  <script src="js/generate.js"></script>
+  <script src="js/builder.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+/* app.css — end-user app chrome, rebuilt to match the real captured Makyo
+   interface (docs/research/2026-09-09-makyo-interface-pixel-reference.md)
+   rather than an invented layout. */
+
+.app-shell { display: flex; min-height: 100vh; background: var(--color-white); }
+
+/* ---- Left sidebar ---- */
+.app-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--color-white);
+  border-right: var(--border);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+}
+.app-sidebar__brand { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-4); }
+/* Real app icon (the same Twemoji asset already used on the Apps-list
+   card) rather than a plain navy square with a letter - this is the
+   same app, so its icon should look identical everywhere it appears. */
+.app-sidebar__icon {
+  width: 32px; height: 32px; border-radius: var(--radius);
+  background: rgb(44, 62, 80);
+  display: flex; align-items: center; justify-content: center;
+}
+.app-sidebar__name { font-weight: 700; font-size: 14px; line-height: 1.2; }
+.app-sidebar__version { font-size: 11px; color: var(--color-gray-500); }
+.app-sidebar__search {
+  width: 100%; border: var(--border); border-radius: var(--radius);
+  padding: var(--space-2); font-family: var(--font-body); font-size: 13px;
+  margin-bottom: var(--space-4); color: var(--color-gray-500);
+}
+.app-sidebar__group { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: var(--color-gray-500); text-transform: uppercase; margin: var(--space-3) 0 var(--space-1); }
+.app-sidebar__item {
+  display: block; width: 100%; text-align: left; font-family: var(--font-body);
+  font-size: 14px; padding: var(--space-2) var(--space-2); border: none; background: none;
+  border-radius: var(--radius); cursor: pointer; color: var(--color-navy); margin-bottom: 2px;
+}
+.app-sidebar__item--active { background: var(--color-gray-100); font-weight: 600; }
+
+/* ---- Main content ---- */
+.app-main { flex: 1; min-width: 0; background: var(--color-white); }
+.app-breadcrumb {
+  display: flex; align-items: center; gap: var(--space-4);
+  padding: var(--space-3) var(--space-6); font-size: 13px; color: var(--color-gray-500);
+  border-bottom: var(--border);
+}
+.app-breadcrumb__link { color: var(--color-gray-500); }
+.app-screen-strip {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--space-3) var(--space-6); background: var(--color-gray-300);
+  font-size: 14px; font-weight: 600; border-bottom: var(--border);
+}
+.screen { padding: var(--space-6); max-width: 1080px; }
+
+/* ---- List-screen header pattern: PROJECT eyebrow + title + subtitle + button ---- */
+.list-header { border-left: 3px solid var(--color-blue); padding-left: var(--space-4); margin-bottom: var(--space-5); }
+.list-header__eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-gray-500); margin-bottom: var(--space-1); }
+.list-header__title { font-size: 32px; margin-bottom: var(--space-1); }
+.list-header__subtitle { color: var(--color-gray-500); font-size: 14px; margin-bottom: var(--space-3); }
+.list-header__button {
+  font-family: var(--font-body); font-weight: 600; font-size: 14px;
+  border: var(--border); border-radius: var(--radius); background: var(--color-white);
+  padding: var(--space-2) var(--space-4); cursor: pointer; color: var(--color-navy);
+}
+
+.list-search-row { display: flex; gap: var(--space-3); margin-bottom: var(--space-4); }
+.list-search {
+  flex: 1; border: var(--border); border-radius: var(--radius);
+  padding: var(--space-2) var(--space-3); font-family: var(--font-body); font-size: 14px;
+}
+.list-filter {
+  border: var(--border); border-radius: var(--radius); background: var(--color-white);
+  padding: var(--space-2) var(--space-3); font-family: var(--font-body); font-size: 14px; color: var(--color-gray-500);
+}
+
+/* ---- Pagination (visual chrome, matches the real interface) ---- */
+.pagination { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-4); font-size: 13px; color: var(--color-gray-500); }
+.pagination button {
+  border: var(--border); background: var(--color-white); border-radius: var(--radius);
+  padding: var(--space-1) var(--space-3); font-family: var(--font-body); font-size: 13px; color: var(--color-gray-500); cursor: default;
+}
+.pagination button.pagination__page--active { background: var(--color-navy); color: var(--color-white); border-color: var(--color-navy); }
+
+/* ---- Dashboard ---- */
+.payment-status-card {
+  background: var(--color-white); border: var(--border); border-radius: var(--radius);
+  padding: var(--space-4); margin-bottom: var(--space-4);
+}
+.payment-status-card h3 { font-size: 15px; margin-bottom: var(--space-3); }
+.payment-status-card__stat { background: var(--color-gray-200); border-radius: var(--radius); padding: var(--space-5); text-align: center; }
+.payment-status-card__value { font-family: var(--font-heading); font-size: 36px; font-weight: 700; }
+.payment-status-card__label { font-size: 12px; color: var(--color-gray-500); margin-bottom: var(--space-2); text-transform: uppercase; letter-spacing: 0.04em; }
+
+.dashboard-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-4); margin-bottom: var(--space-5); }
+
+/* Due This Week - demo content, not Makyo chrome; see the comment above
+   its markup in views.js for why this doesn't need pixel evidence. */
+.due-soon-card {
+  background: var(--color-white); border: var(--border); border-radius: var(--radius);
+  padding: var(--space-4); margin-bottom: var(--space-5);
+}
+.due-soon-card h3 { font-size: 15px; margin-bottom: var(--space-3); }
+.due-soon-card__list { display: flex; flex-direction: column; gap: var(--space-2); }
+.due-soon-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: var(--space-3); border-radius: var(--radius); border: var(--border);
+  border-left-width: 3px;
+}
+.due-soon-row--urgent { border-left-color: var(--color-red); }
+.due-soon-row--soon { border-left-color: var(--color-blue); }
+.due-soon-row__main { display: flex; align-items: baseline; gap: var(--space-3); }
+.due-soon-row__id { font-weight: 600; font-size: 13px; }
+.due-soon-row__client { font-size: 13px; color: var(--color-gray-500); }
+.due-soon-row__meta { display: flex; align-items: center; gap: var(--space-3); }
+.due-soon-row__amount { font-weight: 600; font-size: 13px; }
+.due-soon-row__pill { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 999px; }
+.due-soon-row--urgent .due-soon-row__pill { background: var(--color-red-bg); color: var(--color-red); }
+.due-soon-row--soon .due-soon-row__pill { background: var(--color-blue-bg); color: var(--color-blue); }
+.chart-card { background: var(--color-white); border: var(--border); border-radius: var(--radius); padding: var(--space-4); }
+.chart-card__header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-3); }
+.chart-card h3 { font-size: 14px; }
+.chart-card__filter { font-size: 12px; color: var(--color-gray-500); }
+.chart-card__total { font-size: 13px; color: var(--color-gray-500); margin-top: var(--space-2); }
+.donut-legend { display: flex; gap: var(--space-3); justify-content: center; margin-top: var(--space-2); font-size: 12px; }
+.donut-legend__dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
+
+.rank-bars { display: flex; flex-direction: column; gap: 6px; }
+.rank-bar { position: relative; height: 26px; border-radius: var(--radius); overflow: hidden; background: var(--color-gray-100); }
+.rank-bar__fill { position: absolute; inset: 0; }
+/* Was position:relative with no width of its own, so long client names
+   (e.g. "Nolan & Cross Law Group") kept rendering past the colored
+   fill's own edge - white text on the plain background behind it,
+   effectively invisible. Now absolutely positioned and width-matched to
+   the same percentage as .rank-bar__fill (set inline, same value), so
+   overflow:hidden/text-overflow:ellipsis actually has a box to clip
+   against and long names truncate inside the colored bar instead of
+   spilling out of it. */
+.rank-bar__label { position: absolute; inset: 0; z-index: 1; color: var(--color-white); font-size: 12px; font-weight: 600; padding: 0 var(--space-2); line-height: 26px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-sizing: border-box; }
+
+.section-title { font-size: 16px; margin: var(--space-5) 0 var(--space-3); }
+.invoice-card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+.invoice-mini-card { background: var(--color-white); border: var(--border); border-radius: var(--radius); padding: var(--space-3); position: relative; }
+.invoice-mini-card__number { font-weight: 700; font-size: 14px; }
+.invoice-mini-card__date { font-size: 12px; color: var(--color-gray-500); margin-top: 2px; }
+.invoice-mini-card__menu { position: absolute; top: var(--space-2); right: var(--space-2); color: var(--color-gray-500); }
+
+/* ---- Clients ---- */
+.client-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+.client-card {
+  background: var(--color-white); border: var(--border); border-radius: var(--radius);
+  padding: var(--space-3) var(--space-4); display: flex; align-items: center; justify-content: space-between;
+}
+.client-card__name { font-weight: 700; font-size: 14px; }
+.client-card__actions { display: flex; align-items: center; gap: var(--space-1); flex-shrink: 0; margin-left: var(--space-2); }
+.icon-btn {
+  width: 26px; height: 26px; border-radius: 50%; border: var(--border); background: var(--color-white);
+  display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--color-blue); flex-shrink: 0;
+}
+.icon-btn--kebab { border: none; color: var(--color-gray-500); }
+
+/* ---- Data tables (Invoices / Follow-Ups) ---- */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th { text-align: left; font-size: 12px; font-weight: 700; color: var(--color-navy); padding: var(--space-2) var(--space-3); border-bottom: 2px solid var(--color-gray-300); }
+.data-table td { padding: var(--space-3); border-bottom: var(--border); font-size: 13px; }
+.data-table tr:last-child td { border-bottom: none; }
+.invoice-row--overdue td { color: var(--color-red); }
+/* Real: relationship-lookup values (Client Email Lookup on both
+   Invoices and Follow-Ups) render link-colored, same visual language as
+   the id-pill invoice-number links - confirmed via kept_0053. */
+.lookup-cell { color: var(--color-blue); }
+.row-menu { color: var(--color-gray-500); cursor: pointer; }
+.invoice-row--overdue { background: var(--color-red-bg); }
+.btn-follow-up {
+  font-family: var(--font-body); font-size: 12px; font-weight: 600;
+  padding: var(--space-1) var(--space-2); border-radius: var(--radius);
+  border: 1px solid var(--color-blue); background: var(--color-white); color: var(--color-blue); cursor: pointer;
+}
+.id-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  border: var(--border); border-radius: 12px; padding: 2px 10px 2px 6px;
+  font-size: 12px; color: var(--color-navy); background: var(--color-white);
+}
+.method-pill { display: inline-block; border-radius: 12px; padding: 2px 10px; font-size: 12px; }
+.method-pill--email { background: var(--color-blue-bg); color: var(--color-blue); }
+.method-pill--phone { background: var(--color-teal-bg); color: var(--color-teal); }

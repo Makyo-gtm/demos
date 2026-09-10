@@ -1,0 +1,358 @@
+/* generate.css — Layer 1, rebuilt to match the real captured Makyo screens
+   (docs/research/2026-09-09-makyo-interface-pixel-reference.md): a light
+   "Describe your app" entry screen and a two-panel build-steps sequence,
+   not an invented dark full-screen progress bar.
+
+   Every rule in this file is Makyo's own PRODUCT SHELL (Create new app /
+   Describe your app / build sequence) — confirmed, by reading the real
+   saved page's CSS directly, to be a SEPARATE design system (shadcn/ui
+   tokens: rounded corners, neutral grays) from the "Sharp/Hairline" theme
+   that gets applied to the GENERATED app (that theme lives in app.css and
+   is unaffected by this file). Uses the --shell-* tokens from theme.css. */
+
+.generate-screen { min-height: 100vh; background: var(--shell-bg); }
+
+/* Real keyframes/easing, copied verbatim from the actual saved page's
+   org-scoped animation CSS (fade-up on cards, pop on the ready-modal and
+   completed step-checks). */
+@keyframes app-gen-fade-up { 0% { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes app-gen-pop { 0% { opacity: 0; transform: scale(.6); } 60% { transform: scale(1.15); } to { opacity: 1; transform: scale(1); } }
+.create-choice-card { animation: .4s ease-out both app-gen-fade-up; }
+.create-choice-card--ai { animation-delay: .08s; }
+.ready-modal { animation: .35s cubic-bezier(.2,1.4,.4,1) both app-gen-pop; }
+.gen-step--done .gen-step__check { animation: .3s cubic-bezier(.2,1.4,.4,1) both app-gen-pop; }
+
+/* ---- Screen: Describe your app ---- */
+.describe-screen { position: relative; overflow: hidden; min-height: 100vh; color: var(--shell-fg); font-family: var(--shell-font); }
+/* Real: three large, blurred, low-opacity color blobs behind the whole
+   screen (position/size/color/opacity all copied from the real page's
+   own classes: -top-40 -left-32 h-[28rem] w-[28rem] bg-primary/10,
+   top-1/3 -right-32 h-[26rem] w-[26rem] bg-violet-500/10, -bottom-40
+   left-1/3 h-[24rem] w-[24rem] bg-primary/[0.06], all blur-3xl). */
+.describe-bg-glow { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.describe-bg-glow__blob { position: absolute; border-radius: 50%; filter: blur(64px); }
+.describe-bg-glow__blob--1 { top: -160px; left: -128px; width: 448px; height: 448px; background: var(--color-blue-light); opacity: 0.10; }
+.describe-bg-glow__blob--2 { top: 33.333%; right: -128px; width: 416px; height: 416px; background: #8d54ff; opacity: 0.10; }
+.describe-bg-glow__blob--3 { bottom: -160px; left: 33.333%; width: 384px; height: 384px; background: var(--color-blue-light); opacity: 0.06; }
+.describe-topbar { padding: var(--space-4) var(--space-6); border-bottom: var(--shell-sidebar-border); display: flex; justify-content: space-between; align-items: center; }
+.describe-topbar__wordmark { display: flex; align-items: center; }
+.describe-topbar__logo { display: block; }
+.describe-topbar__version { font-size: 10px; font-weight: 500; color: var(--shell-muted-fg); margin-left: var(--space-2); }
+.describe-topbar__icons { display: flex; align-items: center; gap: var(--space-4); color: var(--shell-muted-fg); }
+/* Real: this row has its own border-bottom, separate from the topbar's -
+   confirmed from the real page's own two adjacent bordered bars
+   (<header class="border-b ...">, then a sibling
+   <div class="border-b border-border ..."> wrapping just this "Back"
+   link). An earlier version of this file only had the first divider. */
+.describe-back { padding: 10px var(--space-6); border-bottom: var(--shell-border); color: var(--shell-muted-fg); font-size: 13px; font-weight: 500; }
+
+/* Real layout: an asymmetric 25%/75% grid (a bordered form column, a
+   plain preview column), not a centered pair of equal columns - confirmed
+   from the real saved page's own `grid-cols-[25%_75%]` class and a live
+   screenshot of the actual screen. */
+.describe-grid { display: grid; grid-template-columns: 25% 75%; max-width: 1800px; margin: 0 auto; }
+.describe-aside { border-right: var(--shell-border); padding: var(--space-6); }
+.describe-title { font-size: 18px; margin: 0; }
+.describe-subtitle { color: var(--shell-muted-fg); font-size: 13px; margin: 4px 0 var(--space-4); }
+.describe-reset-row { display: flex; justify-content: flex-end; margin-bottom: var(--space-2); }
+/* The real Reset button is genuinely disabled (dimmed, unclickable)
+   whenever the textarea is empty - which, now that the textarea starts
+   empty by default, is the state this screen always mounts in. Not
+   wired to re-enable on input since Reset isn't part of the demo's
+   required click path, but it should never look falsely clickable. */
+.describe-reset { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; color: var(--shell-muted-fg); opacity: 0.6; white-space: nowrap; }
+
+/* Real: rounded-xl textarea, no icon buttons inside it, and NO permanent
+   colored border - a prior version of this file wrapped it in an
+   always-blue border meant to look "focused" even when it wasn't; the
+   real textarea only shows a ring on actual :focus. */
+.describe-textarea {
+  width: 100%; min-height: 220px; resize: none; padding: 8px var(--space-3);
+  font-size: 14px; line-height: 1.6; color: var(--shell-fg); background: var(--shell-bg);
+  border: var(--shell-border); border-radius: var(--shell-radius-xl); outline: none;
+  box-sizing: border-box; font-family: inherit;
+}
+.describe-textarea:focus { border-color: var(--color-blue-light); box-shadow: 0 0 0 3px rgba(109, 92, 232, 0.15); }
+.describe-ai-engine {
+  font-size: 12px; font-weight: 600; color: var(--shell-muted-fg); cursor: pointer;
+  border: var(--shell-border); border-radius: var(--shell-radius-xl); padding: 10px 14px; margin: var(--space-3) 0;
+}
+.describe-ai-engine summary span { font-weight: 400; }
+.describe-mascot-img { width: 220px; max-width: 80%; height: auto; }
+.describe-submit {
+  width: 100%; height: 36px; font-weight: 600; font-size: 14px; box-sizing: border-box;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--color-blue-light); color: var(--color-white); border: none;
+  border-radius: var(--shell-radius-xl); cursor: pointer;
+}
+/* ICON_SPARKLES's <svg> carries no width/height of its own (relies on a
+   sizing rule at each call site, same as .create-choice-card__icon svg
+   elsewhere in this file) - this one was missing, so the icon rendered
+   at the SVG spec's default replaced-element size (300x150px) inside a
+   36px-tall button, which is exactly the "weird striped pattern" the
+   user saw: a massively oversized icon clipped by the button's bounds.
+   18px matches the real button's own w-[18px] h-[18px] icon size. */
+.describe-submit svg { width: 18px; height: 18px; flex-shrink: 0; }
+/* Real: disabled (dimmed, unclickable) until the textarea has content -
+   this screen now mounts in exactly that state and only enables once
+   the presenter actually types or pastes into the box. */
+.describe-submit:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+.describe-helper { text-align: center; font-size: 12px; color: var(--shell-muted-fg); margin-top: var(--space-2); }
+
+.describe-preview { min-height: 60vh; display: flex; align-items: center; justify-content: center; padding: var(--space-6); text-align: center; }
+.describe-preview-inner { max-width: 450px; }
+.describe-mascot-caption { color: var(--shell-muted-fg); font-size: 16px; margin-top: var(--space-3); }
+
+/* ---- Org shell: the persistent layout for Apps list + Create new app ----
+   (confirmed present on both via real screenshots; NOT present on Describe
+   your app, which uses .describe-screen/.describe-grid directly instead). */
+.org-shell { min-height: 100vh; font-family: var(--shell-font); }
+/* theme.css's global `h1,h2,h3 { font-family: var(--font-heading) }` rule
+   (Space Grotesk, for the GENERATED app) directly matches these elements
+   and would otherwise win over the inherited --shell-font, since a
+   directly-matching rule always beats an inherited value regardless of
+   specificity. Re-assert the real shell font here. */
+.org-shell h1, .org-shell h2, .org-shell h3,
+.describe-screen h1, .describe-screen h2, .describe-screen h3 { font-family: var(--shell-font); }
+.org-shell__body { display: flex; min-height: calc(100vh - 56px); }
+.org-shell__main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+/* The real page wraps every org-shell screen's own title ("Apps",
+   "Create new app") in its own 64px bar with a bottom border, separate
+   from both the top wordmark bar and the sidebar — confirmed directly
+   from real saved HTML (a `border-b border-sidebar-border` div, h-16,
+   sitting above the padded content). An earlier version of this file put
+   the title inline with the content instead, with no border anywhere —
+   that missing bar, not a border color, was the still-unresolved
+   "line under Apps" the user kept pointing at. */
+.org-subheader { height: 64px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: 0 var(--space-6); border-bottom: var(--shell-sidebar-border); background: var(--shell-bg); }
+.org-subheader__title { font-size: 18px; font-weight: 600; color: var(--shell-fg); }
+.org-subheader__stats { font-size: 14px; color: var(--shell-muted-fg); }
+.org-content { flex: 1; min-height: 0; overflow: auto; padding: var(--space-6); }
+
+.org-sidebar {
+  width: 256px; flex-shrink: 0; background: var(--shell-sidebar-bg);
+  border-right: var(--shell-sidebar-border); display: flex; flex-direction: column; color: var(--shell-fg);
+}
+/* Fixed to the same 64px height as .org-subheader (rather than deriving
+   the height from padding-around-content, which the real page's own two
+   nested elements do and lands a few px short of 64) so their two
+   border-bottom lines sit at the exact same y-position across the full
+   width — confirmed via a real screenshot that this row's divider and
+   the subheader's divider are meant to read as one continuous line. */
+.org-sidebar__org { height: 64px; box-sizing: border-box; display: flex; align-items: center; gap: var(--space-3); padding: 0 var(--space-4); border-bottom: var(--shell-sidebar-border); }
+.org-sidebar__avatar {
+  width: 32px; height: 32px; border-radius: var(--shell-radius-lg); background: var(--color-gray-300);
+  display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0;
+}
+.org-sidebar__org-text { flex: 1; min-width: 0; }
+.org-sidebar__org-name { font-weight: 600; font-size: 14px; }
+.org-sidebar__org-plan { font-size: 12px; color: var(--shell-muted-fg); }
+.org-sidebar__swap { color: var(--shell-muted-fg); flex-shrink: 0; display: flex; }
+.org-sidebar__nav { flex: 1; padding: var(--space-2) var(--space-3); overflow-y: auto; }
+.org-sidebar__trash { padding: var(--space-2) var(--space-3) var(--space-4); border-top: var(--shell-sidebar-border); }
+.org-sidebar__item {
+  /* font-family used to be hardcoded to var(--font-body) (the generated
+     app's IBM Plex Sans) here directly, which — being a class rule on
+     the element itself — silently beat the .org-shell ancestor's
+     --shell-font fix from the previous pass (a rule matching the
+     element directly always wins over an inherited value). That
+     mismatched typeface, not the numeric weight, was the remaining
+     "not bold enough" gap: font-weight 500 here already matches the
+     real font-medium class. Now inherits --shell-font like everything
+     else in the shell. */
+  width: 100%; display: flex; align-items: center; gap: var(--space-3); text-align: left;
+  padding: 10px var(--space-3); border: none; background: none; border-radius: var(--shell-radius);
+  font-size: 14px; font-weight: 500; color: var(--shell-fg); cursor: pointer; margin-bottom: 2px;
+}
+.org-sidebar__item--active { background: var(--color-blue-light); color: var(--color-white); }
+.org-sidebar__icon { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.7; }
+.org-sidebar__icon svg { width: 100%; height: 100%; }
+
+.apps-toolbar { display: flex; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-5); }
+.apps-search { flex: 1; max-width: 400px; border: var(--shell-border); border-radius: var(--shell-radius-lg); padding: var(--space-2) var(--space-3); font-size: 14px; }
+.apps-toolbar__right { display: flex; gap: var(--space-2); align-items: center; }
+.apps-toolbar__btn { display: flex; align-items: center; gap: 6px; height: 36px; border: var(--shell-border); border-radius: var(--shell-radius-lg); padding: 0 var(--space-3); font-size: 14px; color: var(--shell-fg); box-sizing: border-box; }
+.apps-toolbar__btn--icon { width: 36px; padding: 0; justify-content: center; }
+.apps-create-btn { background: var(--color-blue-light); color: var(--color-white); border: none; border-radius: var(--shell-radius-lg); height: 36px; padding: 0 var(--space-4); font-weight: 600; font-size: 14px; cursor: pointer; box-sizing: border-box; }
+
+.apps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-4); }
+.app-card { display: flex; gap: var(--space-3); border: var(--shell-border); border-radius: var(--shell-radius-xl); padding: var(--space-4); }
+.app-card__icon { width: 64px; height: 64px; border-radius: var(--shell-radius-lg); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.app-card__icon img { width: 28px; height: 28px; }
+.app-card__name { font-weight: 600; font-size: 16px; color: var(--shell-fg); }
+.app-card__status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--shell-muted-fg); margin: 2px 0; }
+.app-card__status-icon { color: #f59e0b; flex-shrink: 0; }
+.app-card__desc { font-size: 13px; color: var(--shell-muted-fg); margin-bottom: var(--space-2); }
+.app-card__meta { display: flex; gap: var(--space-3); align-items: center; font-size: 10px; color: var(--shell-muted-fg); }
+.app-card__team { border: var(--shell-border); border-radius: 10px; padding: 1px 6px; height: 20px; box-sizing: border-box; display: inline-flex; align-items: center; }
+
+/* ---- Screen: Create new app (the real intermediate choice screen) ---- */
+.create-choice-body { max-width: 1000px; margin: 0 auto; }
+.create-choice-h2 { font-size: 38px; margin-bottom: var(--space-2); text-align: center; }
+.create-choice-subtitle { color: var(--shell-muted-fg); font-size: 15px; margin-bottom: var(--space-6); text-align: center; }
+.create-choice-cards { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); }
+.create-choice-card { border: var(--shell-border); border-radius: var(--shell-radius-xl); padding: var(--space-5); cursor: pointer; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+.create-choice-card:hover { border-color: var(--color-blue-light); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+.create-choice-card__icon {
+  width: 44px; height: 44px; border-radius: var(--shell-radius-lg); background: #ede9fe; color: var(--color-blue-light);
+  display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-4);
+}
+.create-choice-card__icon svg { width: 22px; height: 22px; }
+.create-choice-card h3 { font-size: 18px; margin-bottom: var(--space-2); color: var(--shell-fg); }
+.create-choice-card p { color: var(--shell-muted-fg); font-size: 14px; margin-bottom: var(--space-4); }
+.create-choice-tags { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.create-choice-tags span { font-size: 12px; border: var(--shell-border); border-radius: var(--shell-radius); padding: 3px 10px; color: var(--shell-muted-fg); }
+
+/* ---- Screen: build-steps sequence ----
+   Real: three panels side by side the whole time (confirmed frame-by-
+   frame against the recon recording), not two - the middle app-summary
+   panel never disappears, and a third, separate panel appears alongside
+   it rather than replacing it. */
+.gen-screen { display: grid; grid-template-columns: 320px 340px 1fr; min-height: 100vh; color: var(--shell-fg); font-family: var(--shell-font); }
+.gen-panel--steps { border-right: var(--shell-border); padding: var(--space-5); }
+.gen-panel--summary { border-right: var(--shell-border); padding: var(--space-5); background: var(--color-gray-100); overflow-y: auto; }
+.gen-panel--preview { padding: var(--space-5); overflow-y: auto; }
+.gen-steps-title { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--shell-muted-fg); margin-bottom: var(--space-3); }
+/* Row spacing widened from --space-2 (8px) after a direct side-by-side
+   render comparison against kept_0012 showed the real rows noticeably
+   more spaced out than this - roughly 52px row-to-row in the real
+   frame vs this file's tighter packing. */
+.gen-step { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-3) 0; opacity: 0.45; }
+.gen-step--done { opacity: 1; }
+.gen-step__check {
+  width: 18px; height: 18px; border-radius: 50%; border: 2px solid #d4d4d4;
+  flex-shrink: 0; position: relative;
+}
+.gen-step--done .gen-step__check { background: var(--color-blue-light); border-color: var(--color-blue-light); }
+.gen-step--done .gen-step__check::after {
+  content: ''; position: absolute; left: 5px; top: 2px; width: 4px; height: 8px;
+  border: solid var(--color-white); border-width: 0 2px 2px 0; transform: rotate(45deg);
+}
+.gen-step__label { flex: 1; font-size: 13px; }
+.gen-step__badges { display: flex; gap: 3px; }
+.gen-step__badge { font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: var(--shell-radius); }
+.gen-step__badge--ai { background: #ede9fe; color: #6d28d9; }
+.gen-step__badge--script { background: var(--color-blue-bg); color: var(--color-blue); }
+.gen-progress-row { margin-top: var(--space-4); }
+.gen-progress-bar { height: 4px; background: var(--color-gray-100); border-radius: var(--shell-radius); overflow: hidden; }
+.gen-progress-bar__fill { height: 100%; width: 0%; background: var(--color-blue-light); transition: width 0.3s ease; }
+.gen-progress-label { display: block; font-size: 11px; color: var(--shell-muted-fg); margin-top: var(--space-1); }
+.gen-usage { margin-top: var(--space-5); padding-top: var(--space-4); border-top: var(--shell-border); }
+.gen-usage__title { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--shell-muted-fg); margin-bottom: var(--space-2); }
+.gen-usage__row { display: flex; justify-content: space-between; font-size: 12px; padding: 3px 0; }
+.gen-usage__row span:first-child { color: var(--shell-muted-fg); }
+.gen-usage__row span:last-child { font-weight: 600; }
+
+.gen-summary-card, .gen-look-card {
+  background: var(--color-white); border: var(--shell-border); border-radius: var(--shell-radius-lg);
+  padding: var(--space-4); margin-bottom: var(--space-3);
+}
+.gen-summary-card__icon { font-size: 20px; margin-bottom: var(--space-1); }
+/* 16px read visibly small next to the real frame's title - bumped to
+   18px, matching the same text-lg size already confirmed elsewhere in
+   this exact shell (.org-subheader__title). */
+.gen-summary-card__name { font-family: var(--font-heading); font-weight: 700; font-size: 18px; }
+.gen-summary-card__tagline { color: var(--shell-muted-fg); font-size: 12px; margin-bottom: var(--space-2); }
+.gen-summary-card__desc { font-size: 13px; margin-bottom: var(--space-3); }
+.gen-summary-card__fields { display: flex; gap: var(--space-5); margin-bottom: var(--space-3); }
+.gen-summary-card__field-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--shell-muted-fg); margin-bottom: var(--space-1); }
+.gen-summary-card__field-value { font-size: 13px; font-weight: 600; }
+/* Real: MODULES tags, a Model badge, and a live time/tokens/cost stats
+   line at the bottom of this card - confirmed from the recording, an
+   earlier version of this file never built any of this section. */
+.gen-summary-card__tags { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-3); }
+.gen-summary-card__tags span { font-size: 12px; border: var(--shell-border); border-radius: var(--shell-radius); padding: 3px 10px; }
+.gen-summary-card__divider { border-top: var(--shell-border); margin-bottom: var(--space-3); }
+.gen-summary-card__model { display: inline-block; font-size: 12px; border: var(--shell-border); border-radius: var(--shell-radius); padding: 3px 10px; margin-bottom: var(--space-2); color: var(--shell-muted-fg); }
+.gen-summary-card__stats { font-size: 12px; color: var(--shell-muted-fg); }
+.gen-look-card__title { font-weight: 700; font-size: 14px; margin-bottom: var(--space-2); }
+.gen-look-swatches { display: flex; gap: var(--space-2); margin-bottom: var(--space-3); }
+.gen-swatch { width: 28px; height: 28px; border-radius: var(--shell-radius); display: inline-block; }
+/* font-weight used to live on this container, which bolded the "Heading
+   font"/"Body font" LABELS too (a directly-matching rule/inheritance
+   bolds everything inside unless overridden) - real evidence shows only
+   the font-name VALUES are bold, the labels stay regular, same pattern
+   already used correctly for Domain/Type. Weight now lives only on
+   .gen-summary-card__field-value, reused here for the value text. */
+.gen-look-fonts { display: flex; gap: var(--space-5); font-size: 13px; margin-bottom: var(--space-3); }
+.gen-look-tags { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.gen-look-tags span { font-size: 11px; border: var(--shell-border); border-radius: var(--shell-radius); padding: 2px 8px; color: var(--shell-muted-fg); }
+
+/* Real: this panel starts as a plain centered spinner + "Opening your
+   app..." (kept_0012) before the preview shell below ever appears. */
+.gen-preview-opening { min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-3); color: var(--shell-muted-fg); font-size: 14px; }
+/* Real bug, found by actually rendering this and checking computed
+   styles: --shell-border is itself a full shorthand (1px solid #cbcbd1),
+   so nesting it inside another shorthand ("border: 3px solid
+   var(--shell-border)") produced an invalid value ("3px solid 1px solid
+   #cbcbd1"), which CSS silently drops entirely - the whole border came
+   back as border-style:none/width:0 in the actual browser, making the
+   spinner completely invisible despite every other computed style
+   looking correct. Build on the shorthand token instead of nesting it. */
+.gen-spinner {
+  width: 32px; height: 32px; border-radius: 50%; border: var(--shell-border);
+  border-width: 3px; border-top-color: var(--color-blue-light); animation: gen-spin 0.8s linear infinite;
+}
+@keyframes gen-spin { to { transform: rotate(360deg); } }
+
+/* Real: a miniature recreation of the app's OWN shell - its own sidebar
+   (icon/name/version, search, nav) beside its own Dashboard content pane
+   - confirmed frame-by-frame against the recon recording (kept_0013),
+   not a flat card. */
+.gen-preview-shell { display: flex; border: var(--shell-border); border-radius: var(--shell-radius-lg); overflow: hidden; background: var(--color-white); min-height: 560px; }
+/* Widened from 200px after actually rendering this screen: "Agency
+   Receivables" was truncating to "Agency Receiva..." at 200px, which
+   never showed in the real recording. */
+.gen-preview-shell__sidebar { width: 240px; flex-shrink: 0; border-right: var(--shell-border); padding: var(--space-3); }
+.gen-preview-shell__appbar { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); }
+.gen-preview-shell__appicon { width: 28px; height: 28px; border-radius: var(--shell-radius); background: rgb(44, 62, 80); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.gen-preview-shell__appmeta { flex: 1; min-width: 0; }
+.gen-preview-shell__appname { font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gen-preview-shell__appversion { font-size: 10px; color: var(--shell-muted-fg); }
+.gen-preview-shell__search { width: 100%; box-sizing: border-box; border: var(--shell-border); border-radius: var(--shell-radius); padding: 6px var(--space-2); font-size: 11px; font-family: inherit; margin-bottom: var(--space-3); color: var(--shell-muted-fg); }
+.gen-preview-shell__navlabel { font-size: 9px; font-weight: 700; letter-spacing: 0.05em; color: var(--shell-muted-fg); margin-bottom: var(--space-2); }
+.gen-preview-shell__nav { display: flex; flex-direction: column; gap: 2px; }
+.gen-preview-shell__navitem { display: flex; align-items: center; gap: 6px; font-size: 12px; padding: 6px var(--space-2); border-radius: var(--shell-radius); color: var(--shell-fg); }
+.gen-preview-shell__navitem svg { flex-shrink: 0; opacity: 0.7; }
+.gen-preview-shell__navitem--active { background: var(--color-gray-100); }
+.gen-preview-shell__content { flex: 1; min-width: 0; padding: var(--space-4); }
+.gen-preview-shell__tabs { display: flex; gap: var(--space-4); margin-bottom: var(--space-2); padding-bottom: var(--space-2); border-bottom: var(--shell-border); }
+.gen-preview-shell__tab { font-size: 12px; color: var(--shell-muted-fg); }
+.gen-preview-shell__tab--active { color: var(--shell-fg); font-weight: 700; }
+.gen-preview-shell__toolbar { display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: var(--space-4); color: var(--shell-muted-fg); }
+.gen-preview-shell__toolbar span { display: flex; align-items: center; gap: 6px; }
+.gen-preview-shell__customize { border: var(--shell-border); background: var(--color-white); border-radius: var(--shell-radius-lg); padding: 6px var(--space-3); font-size: 12px; font-weight: 600; color: var(--shell-fg); }
+
+.gen-live-preview__title-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-3); }
+.gen-live-preview__title { font-family: var(--font-heading); font-weight: 700; font-size: 20px; }
+.gen-live-preview__subtitle { color: var(--shell-muted-fg); font-size: 12px; }
+.gen-live-preview__card { border: var(--shell-border); border-radius: var(--shell-radius); padding: var(--space-3); margin-bottom: var(--space-3); font-size: 13px; }
+.gen-live-preview__row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-2); }
+.gen-live-preview__widget { border: var(--shell-border); border-radius: var(--shell-radius); padding: var(--space-4); }
+.gen-live-preview__widget-label { font-weight: 700; font-size: 12px; margin-bottom: var(--space-1); }
+.gen-loading { color: var(--color-gray-300); font-size: 13px; margin-top: var(--space-2); }
+
+/* ---- "YOUR APP IS READY" completion modal ---- */
+.ready-modal-backdrop {
+  position: fixed; inset: 0; background: rgba(15, 23, 42, 0.4);
+  display: flex; align-items: center; justify-content: center; z-index: 1000;
+}
+.ready-modal { background: var(--color-white); border-radius: var(--shell-radius-xl); padding: var(--space-6); width: 360px; text-align: center; box-shadow: 0 12px 40px rgba(0,0,0,0.25); color: var(--shell-fg); }
+.ready-modal__icon {
+  width: 56px; height: 56px; border-radius: var(--shell-radius-lg); background: #ede9fe; color: var(--color-blue-light);
+  display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-3);
+}
+/* Real: this reads as the same purple/blue-violet accent as the rest of
+   the shell, not green - an earlier version of this file guessed a
+   generic "success" green (#16a34a), which the recording doesn't show. */
+.ready-modal__badge { color: var(--color-blue-light); font-weight: 700; font-size: 12px; letter-spacing: 0.04em; margin-bottom: var(--space-2); }
+.ready-modal__name { font-family: var(--font-heading); font-weight: 700; font-size: 20px; }
+.ready-modal__tagline { color: var(--shell-muted-fg); font-size: 13px; margin: var(--space-1) 0 var(--space-4); }
+.ready-modal__countdown { font-size: 13px; color: var(--shell-muted-fg); margin-bottom: var(--space-2); }
+.ready-modal__bar { height: 4px; background: var(--color-gray-100); border-radius: var(--shell-radius); overflow: hidden; margin-bottom: var(--space-4); }
+.ready-modal__bar-fill { height: 100%; width: 0%; background: var(--color-blue-light); transition: width 1s linear; }
+.ready-modal__buttons { display: flex; gap: var(--space-2); }
+.ready-modal__cancel, .ready-modal__open { flex: 1; padding: var(--space-2); border-radius: var(--shell-radius-lg); font-weight: 600; font-size: 13px; cursor: pointer; }
+.ready-modal__cancel { border: var(--shell-border); background: var(--color-white); color: var(--shell-fg); }
+.ready-modal__open { border: none; background: var(--color-blue-light); color: var(--color-white); }
