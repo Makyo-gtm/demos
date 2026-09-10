@@ -161,15 +161,40 @@
 
 /* ---- Data tables (Invoices / Follow-Ups) ---- */
 .data-table { width: 100%; border-collapse: collapse; }
-.data-table th { text-align: left; font-size: 12px; font-weight: 700; color: var(--color-navy); padding: var(--space-2) var(--space-3); border-bottom: 2px solid var(--color-gray-300); }
-.data-table td { padding: var(--space-3); border-bottom: var(--border); font-size: 13px; }
+/* Horizontal cell padding is tighter than the real table's because our
+   canvas is permanently narrower than the recording's was (that was in
+   focus mode, builder panels hidden). At the real 12px the 8-column
+   Invoices table overflowed by ~28px and clipped the Log follow-up button
+   off the right edge; vertical padding is unchanged, so row height and
+   overall density still read the same on camera. */
+.data-table th { text-align: left; font-size: 12px; font-weight: 700; color: var(--color-navy); padding: var(--space-2); border-bottom: 2px solid var(--color-gray-300); }
+.data-table td { padding: var(--space-3) var(--space-2); border-bottom: var(--border); font-size: 13px; }
 .data-table tr:last-child td { border-bottom: none; }
 .invoice-row--overdue td { color: var(--color-red); }
 /* Real: relationship-lookup values (Client Email Lookup on both
    Invoices and Follow-Ups) render link-colored, same visual language as
    the id-pill invoice-number links - confirmed via kept_0053. */
-.lookup-cell { color: var(--color-blue); }
+/* Capped and ellipsized, which is what the real table does - in kept_0058
+   the Client Email column is visibly truncated ("caleb.cl", "chloe.k") and
+   even its header is clipped to "Client E". Matching that also buys back
+   the width the nowrapped ID and date columns need, so nothing else on the
+   row gets clipped instead. */
+.lookup-cell { color: var(--color-blue); max-width: 170px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .row-menu { color: var(--color-gray-500); cursor: pointer; }
+/* Every Invoices row carries a kebab like the real table does, with the
+   spec-required "Log follow-up" action sitting beside it on overdue rows. */
+.actions-cell { white-space: nowrap; }
+/* The real Invoices/Follow-Ups tables render each date on one line. Our
+   canvas is narrower than the recording's (that was in focus mode, with the
+   builder panels hidden), so without this a date breaks mid-value across
+   two lines ("May 1," / "2026") - visibly broken on camera. */
+.date-cell { white-space: nowrap; }
+/* Same reasoning for the invoice-number column: "INV-1007" breaking into
+   "INV-" / "1007" is a mid-value break the real table never shows. Client
+   names are left free to wrap - those are genuinely variable-length text,
+   and the real table wraps them too. */
+.data-table td:first-child, .data-table th:first-child { white-space: nowrap; }
+.actions-cell .row-menu { margin-left: var(--space-2); }
 .invoice-row--overdue { background: var(--color-red-bg); }
 .btn-follow-up {
   font-family: var(--font-body); font-size: 12px; font-weight: 600;

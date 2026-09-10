@@ -85,18 +85,40 @@
    of this exact panel - lower confidence than the rest of this file). */
 .screen-settings { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; }
 .screen-settings[hidden] { display: none; }
-.screen-settings__header { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-3); border-bottom: var(--shell-sidebar-border); font-size: 13px; font-weight: 700; }
+.screen-settings__header { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-3); font-size: 13px; }
 .screen-settings__back, .screen-settings__close { color: var(--shell-muted-fg); display: flex; cursor: pointer; }
 .screen-settings__icon { color: var(--shell-muted-fg); display: flex; }
-.screen-settings__title { flex: 1; }
-.screen-settings__tabs { display: flex; gap: var(--space-4); padding: 0 var(--space-3); border-bottom: var(--shell-sidebar-border); }
-.screen-settings__tab { font-size: 12px; font-weight: 600; color: var(--shell-muted-fg); padding: var(--space-2) 0; cursor: pointer; border-bottom: 2px solid transparent; }
-.screen-settings__tab--active { color: var(--shell-fg); border-bottom-color: var(--shell-fg); }
-.screen-settings__section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: var(--shell-muted-fg); padding: var(--space-3) var(--space-3) var(--space-2); }
+.screen-settings__heading { display: flex; flex-direction: column; }
+.screen-settings__title { font-weight: 700; }
+.screen-settings__subtitle { font-size: 11px; color: var(--shell-muted-fg); }
+/* Pill tabs with a solid navy active fill, not underlined text tabs -
+   corrected against kept_0061/kept_0062, which show this panel for real
+   (an earlier version of this file was built from a text description
+   only, before those frames were checked, and guessed underlines). */
+.screen-settings__tabs { display: flex; gap: var(--space-2); padding: 0 var(--space-3) var(--space-3); }
+.screen-settings__tab { font-size: 12px; font-weight: 600; color: var(--shell-muted-fg); padding: 6px var(--space-3); border-radius: var(--shell-radius-lg); cursor: pointer; }
+.screen-settings__tab--active { background: var(--color-navy); color: #fff; }
 .screen-settings__field { display: flex; flex-direction: column; gap: 4px; padding: 0 var(--space-3) var(--space-3); font-size: 12px; color: var(--shell-muted-fg); }
 .screen-settings__field input { font-family: inherit; font-size: 13px; color: var(--shell-fg); border: var(--shell-border); border-radius: var(--shell-radius); padding: 6px var(--space-2); background: var(--shell-bg); }
 .screen-settings__field input:disabled { color: var(--shell-muted-fg); background: var(--color-gray-100); }
 .screen-settings__icon-preview { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border: var(--shell-border); border-radius: var(--shell-radius); color: var(--shell-muted-fg); }
+/* Collapsible rows (Content / SEO / Parameters / Screen tags) and the
+   screen's own id chip pinned below them - both real, from kept_0061. */
+.screen-settings__row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 0 var(--space-3) var(--space-2); padding: var(--space-3);
+  border: var(--shell-border); border-radius: var(--shell-radius-lg);
+  font-size: 12px; font-weight: 600; color: var(--shell-fg); cursor: pointer;
+}
+.screen-settings__row:hover { background: var(--color-gray-100); }
+.screen-settings__id {
+  display: flex; align-items: center; gap: 6px;
+  margin: var(--space-2) var(--space-3) var(--space-3); padding: var(--space-2);
+  background: #fffbeb; border: 1px solid #fde68a; border-radius: var(--shell-radius);
+  color: #92400e;
+}
+.screen-settings__id code { font-size: 10px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.screen-settings__id svg { flex-shrink: 0; cursor: pointer; }
 .builder-screen-row__meta { flex: 1; min-width: 0; }
 .builder-screen-row__name { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .builder-screen-row__path { font-size: 10px; color: var(--shell-muted-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

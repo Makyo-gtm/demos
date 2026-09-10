@@ -29,6 +29,23 @@
     return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
+  // Real Makyo renders dates long-form ("Sep 11, 2026"), not ISO - confirmed
+  // in kept_0058 (Invoices) and kept_0053 (Follow-Ups), where every date cell
+  // reads e.g. "Aug 20, 2026, 12:53 AM". The real app also shows a time
+  // because its generated rows carried timestamps; ours are date-only, so
+  // this formats the date part and stops there rather than inventing a time.
+  // Parsed by string split, not new Date(iso) - the latter parses as UTC and
+  // renders the previous day in any negative-offset timezone.
+  var MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  function longDate(iso) {
+    if (!iso) return '';
+    var parts = String(iso).split('-');
+    if (parts.length !== 3) return iso;
+    var month = MONTH_NAMES[parseInt(parts[1], 10) - 1];
+    if (!month) return iso;
+    return month + ' ' + parseInt(parts[2], 10) + ', ' + parts[0];
+  }
+
   function computedInvoices(state) {
     return state.invoices.map(function (inv) { return derive.withComputedFields(inv, seed.DEMO_NOW); });
   }
@@ -292,7 +309,7 @@
       '<h3 class="section-title">Recent Invoices</h3>' +
       '<div class="invoice-card-grid">' +
         recent.map(function (i) {
-          return '<div class="invoice-mini-card"><div class="invoice-mini-card__number">' + i.id + '</div><div class="invoice-mini-card__date">' + i.issueDate + '</div><span class="invoice-mini-card__menu">&#8942;</span></div>';
+          return '<div class="invoice-mini-card"><div class="invoice-mini-card__number">' + i.id + '</div><div class="invoice-mini-card__date">' + longDate(i.issueDate) + '</div><span class="invoice-mini-card__menu">&#8942;</span></div>';
         }).join('') +
       '</div>' +
       pagination(3);
@@ -346,15 +363,20 @@
       var tr = document.createElement('tr');
       var isOverdueHighlighted = state.highlightOverdue && !inv.paid && inv.daysOverdue > 0;
       if (isOverdueHighlighted) tr.className = 'invoice-row--overdue';
+      // Invoice Number is plain text here, NOT the linked-relation pill used
+      // on Follow-Ups: real Makyo pills a field only when it's a relation to
+      // another table (Follow-Ups -> Invoice, kept_0053), and renders a
+      // table's own field as plain text (kept_0058). This file pilled both
+      // until a side-by-side against those two frames caught it.
       tr.innerHTML =
-        '<td><span class="id-pill">&#128279; ' + inv.id + '</span></td>' +
+        '<td>' + inv.id + '</td>' +
         '<td>' + escapeHtml(clientName(state, inv.clientId)) + '</td>' +
         '<td>' + money(inv.amount) + '</td>' +
         '<td>' + (inv.paid ? 'Yes' : 'No') + '</td>' +
-        '<td>' + inv.issueDate + '</td>' +
-        '<td>' + inv.dueDate + '</td>' +
+        '<td class="date-cell">' + longDate(inv.issueDate) + '</td>' +
+        '<td class="date-cell">' + longDate(inv.dueDate) + '</td>' +
         '<td class="lookup-cell">' + escapeHtml(clientEmail(state, inv.clientId)) + '</td>' +
-        '<td></td>';
+        '<td class="actions-cell"></td>';
       if (!inv.paid && inv.daysOverdue > 0) {
         var btn = document.createElement('button');
         btn.className = 'btn-follow-up';
@@ -362,6 +384,13 @@
         btn.addEventListener('click', function () { onLogFollowUp(inv.id); });
         tr.lastElementChild.appendChild(btn);
       }
+      // Every row carries a kebab in real Makyo, whether or not it has any
+      // other action - without this, paid rows rendered a visibly empty
+      // Actions cell that the real table never has.
+      var kebab = document.createElement('span');
+      kebab.className = 'row-menu';
+      kebab.innerHTML = '&#8942;';
+      tr.lastElementChild.appendChild(kebab);
       tbody.appendChild(tr);
     });
     table.appendChild(tbody);
@@ -390,7 +419,7 @@
       var lookupEmail = linkedInvoice ? clientEmail(state, linkedInvoice.clientId) : '';
       tr.innerHTML =
         '<td><span class="id-pill">&#128279; ' + f.invoiceId + '</span></td>' +
-        '<td>' + f.sentDate + '</td>' +
+        '<td class="date-cell">' + longDate(f.sentDate) + '</td>' +
         '<td><span class="method-pill ' + methodClass + '">' + f.method + '</span></td>' +
         '<td class="lookup-cell">' + escapeHtml(lookupEmail) + '</td>' +
         '<td>' + escapeHtml(f.note) + '</td>' +

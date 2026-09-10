@@ -23,6 +23,7 @@
   var ICON_THEMES = icon('<circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2Z"></path>', 14);
   var ICON_PUBLISH = icon('<path d="M12 19V5"></path><path d="m5 12 7-7 7 7"></path>', 14);
   var ICON_CHEVRON_DOWN = icon('<path d="m6 9 6 6 6-6"></path>', 12);
+  var ICON_COPY = icon('<rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>', 13);
   var ICON_SUN = icon('<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path>', 16);
   var ICON_BELL = icon('<path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path>', 16);
   var ICON_PIN = icon('<path d="M12 17v5"></path><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"></path>', 13);
@@ -105,34 +106,60 @@
   // Per-screen "Screen Settings" detail view (Data/Design/Action/Behavior
   // tabs + a General section with Name/Slug/Icon) - real Makyo UI, opened
   // by clicking a screen row's name/path in the Screens list. Unlike the
-  // rest of this file, there's no saved screenshot of THIS exact panel for
-  // this app; the only evidence is a text description from an unrelated
-  // Makyo walkthrough (docs/research/2026-09-04-makyo-kanban-crm-walkthrough.md:
-  // "rename via the screen's General properties (Name + auto-updating
-  // Slug)") plus the Data/Design/Action/Behavior tab names the user
-  // pointed out from their own screenshot. Built from that description,
-  // not pixel evidence - lower confidence than the rest of this chrome,
-  // and flagged as such rather than presented as verified.
+  // First built from a text description only (an unrelated Makyo
+  // walkthrough's "rename via the screen's General properties") and
+  // flagged at the time as lower-confidence than the rest of this chrome.
+  // Since corrected against real frames: kept_0061 and kept_0062 both show
+  // this exact panel open for the Clients screen, behind the AI Chat panel.
+  // What the guess got wrong, now fixed: the tabs are solid-fill pills with
+  // Data active by default (not underlined text tabs defaulting to Design),
+  // the header carries a "Screen Settings" subtitle under the screen name
+  // and has no close button, and below the fields sit four collapsible
+  // rows (Content / SEO / Parameters / Screen tags) and the screen's own
+  // UUID chip - none of which the description mentioned.
+  // The real panel pins the screen's own UUID at the bottom (kept_0061/0062
+  // show "11fcd99b-a2be-4e4b-b1a3-3c97131c3a78" for the Clients screen).
+  // Generated from the index rather than randomly, so a given screen shows
+  // the same id every time - a value that changed between takes, or between
+  // a rehearsal and the real recording, would be a continuity error on film.
+  var UUID_SEEDS = [
+    '11fcd99b-a2be-4e4b-b1a3-3c97131c3a78', '2f7a41c5-9d3e-4c81-8b6f-5e2a71d94c03',
+    '8c1e63b7-4a5d-42f9-9e07-6b3c85f21a4e', 'd45b92e1-7c68-4b3a-a5d2-1f9e04c73b86',
+    '5a83f7d2-6e14-4d95-b78c-3c60e29a51fd', 'b62c04a9-8f37-4e26-9a41-7d5b83e60c1f',
+    '3e19d85c-2b74-4a63-8c95-4f8a16d70b2e', '9f26b1e4-5c83-4f17-a2d6-8e307c94b5a1',
+    '7d54c38a-1e69-4b52-93f8-2a6d05e81c47'
+  ];
+  function screenUuid(idx) {
+    return UUID_SEEDS[idx % UUID_SEEDS.length];
+  }
+
   function screenSettingsHtml(s, idx) {
     var slug = s.path.replace(/^\//, '');
     return (
       '<div class="screen-settings" data-screen-index="' + idx + '" hidden>' +
         '<div class="screen-settings__header">' +
           '<span class="screen-settings__back">' + ICON_BACK + '</span>' +
-          '<span class="screen-settings__icon">' + s.icon + '</span>' +
-          '<span class="screen-settings__title">' + s.name + '</span>' +
-          '<span class="screen-settings__close">' + ICON_X + '</span>' +
+          '<span class="screen-settings__heading">' +
+            '<span class="screen-settings__title">' + s.name + '</span>' +
+            '<span class="screen-settings__subtitle">Screen Settings</span>' +
+          '</span>' +
         '</div>' +
         '<div class="screen-settings__tabs">' +
-          '<span class="screen-settings__tab">Data</span>' +
-          '<span class="screen-settings__tab screen-settings__tab--active">Design</span>' +
+          '<span class="screen-settings__tab screen-settings__tab--active">Data</span>' +
+          '<span class="screen-settings__tab">Design</span>' +
           '<span class="screen-settings__tab">Action</span>' +
           '<span class="screen-settings__tab">Behavior</span>' +
         '</div>' +
-        '<div class="screen-settings__section-label">GENERAL</div>' +
         '<label class="screen-settings__field"><span>Name</span><input type="text" value="' + s.name + '" /></label>' +
         '<label class="screen-settings__field"><span>Slug</span><input type="text" value="' + slug + '" disabled /></label>' +
         '<label class="screen-settings__field"><span>Icon</span><span class="screen-settings__icon-preview">' + s.icon + '</span></label>' +
+        // Collapsible rows below the basic fields, then the screen's own id
+        // chip pinned at the bottom - both straight from kept_0061/kept_0062.
+        '<div class="screen-settings__row">Content</div>' +
+        '<div class="screen-settings__row">SEO</div>' +
+        '<div class="screen-settings__row">Parameters' + ICON_CHEVRON_DOWN + '</div>' +
+        '<div class="screen-settings__row">Screen tags' + ICON_CHEVRON_DOWN + '</div>' +
+        '<div class="screen-settings__id">' + ICON_SPARKLE + '<code>' + screenUuid(idx) + '</code>' + ICON_COPY + '</div>' +
       '</div>'
     );
   }
@@ -351,7 +378,8 @@
       });
     }
 
-    addMessage('assistant', 'Hi! Ask me to tweak something in the app.');
+    // The real panel's own opening line, verbatim from kept_0061.
+    addMessage('assistant', 'Hello! How can I help you design today?');
 
     function doRestart() {
       if (pendingTimer) { clearTimeout(pendingTimer); pendingTimer = null; setInputEnabled(true); }
