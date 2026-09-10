@@ -3,20 +3,14 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Presenting the Agency Receivables Demo</title>
+<title>Agency Receivables Demo — Cheat Sheet</title>
 <style>
   :root {
     --navy: #0f172a;
     --blue: #2563eb;
-    --teal: #0891b2;
-    --offwhite: #f8fafc;
     --gray-100: #f1f5f9;
     --gray-300: #cbd5e1;
     --gray-500: #64748b;
-    --red: #dc2626;
-    --red-bg: #fee2e2;
-    --amber-bg: #fffbeb;
-    --amber-border: #f59e0b;
   }
   * { box-sizing: border-box; }
   body {
@@ -24,221 +18,73 @@
     background: var(--gray-100);
     color: var(--navy);
     font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
-    line-height: 1.55;
+    line-height: 1.5;
   }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
-  header {
-    background: var(--navy);
-    color: white;
-    padding: 40px 24px;
-    text-align: center;
+  header { background: var(--navy); color: white; padding: 28px 24px; text-align: center; }
+  header h1 { font-size: 21px; margin: 0; }
+  .open-demo-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--blue); color: white; text-decoration: none;
+    font-weight: 700; font-size: 15px; padding: 11px 20px;
+    border-radius: 8px; margin-top: 16px;
   }
-  header h1 {
-    font-size: 26px;
-    margin: 0 0 8px;
-  }
-  header p {
-    margin: 0;
-    color: #cbd5e1;
-    font-size: 15px;
-  }
-  h2 {
-    font-size: 19px;
-    margin: 40px 0 12px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--blue);
-  }
-  h2 .num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: var(--blue);
-    color: white;
-    font-size: 14px;
-    margin-right: 8px;
-    vertical-align: middle;
-  }
-  ol.steps { padding-left: 0; list-style: none; counter-reset: step; margin: 0; }
-  ol.steps > li {
+  .open-demo-btn:hover { background: #1d4ed8; }
+  .open-demo-btn svg { width: 16px; height: 16px; }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 32px 24px 64px; }
+  ol { padding-left: 0; list-style: none; counter-reset: step; margin: 0; }
+  ol > li {
     counter-increment: step;
     position: relative;
-    padding: 14px 16px 14px 48px;
-    margin-bottom: 8px;
+    padding: 12px 14px 12px 46px;
+    margin-bottom: 6px;
     background: white;
     border-radius: 6px;
     border: 1px solid var(--gray-300);
+    font-size: 15px;
   }
-  ol.steps > li::before {
+  ol > li::before {
     content: counter(step);
-    position: absolute;
-    left: 14px;
-    top: 14px;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: var(--teal);
-    color: white;
-    font-size: 12px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: absolute; left: 12px; top: 12px;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--navy); color: white;
+    font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
   }
+  .dim { color: var(--gray-500); font-size: 13px; }
   .say-wrap { position: relative; margin-top: 8px; }
   .say {
-    display: block;
-    padding: 10px 40px 10px 12px;
-    background: var(--gray-100);
-    border-left: 3px solid var(--blue);
-    border-radius: 4px;
-    font-style: italic;
-    color: #334155;
-    font-size: 14px;
+    /* Right padding clears the absolutely-positioned Copy button (~62px
+       wide plus its 7px offset) so text never runs underneath it. */
+    display: block; padding: 10px 78px 10px 12px;
+    background: var(--gray-100); border-left: 3px solid var(--blue);
+    border-radius: 4px; color: #334155; font-size: 14px;
   }
-  .say::before { content: "Paste: "; font-style: normal; font-weight: 700; color: var(--blue); }
+  .say--prompt { max-height: 180px; overflow-y: auto; font-size: 13px; }
+  .say--prompt p { margin: 0 0 8px; }
+  .say--prompt p:last-child { margin-bottom: 0; }
   .copy-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    background: white;
-    border: 1px solid var(--gray-300);
-    color: var(--blue);
-    font-size: 12px;
-    font-weight: 700;
-    font-family: inherit;
-    padding: 4px 9px;
-    border-radius: 5px;
-    cursor: pointer;
+    position: absolute; top: 7px; right: 7px;
+    display: flex; align-items: center; gap: 4px;
+    background: white; border: 1px solid var(--gray-300);
+    color: var(--blue); font-size: 12px; font-weight: 700;
+    font-family: inherit; padding: 4px 9px; border-radius: 5px; cursor: pointer;
   }
   .copy-btn:hover { background: var(--gray-100); }
   .copy-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
   .copy-btn.copied { background: #dcfce7; border-color: #86efac; color: #15803d; }
-  /* The full real generation prompt is long and structured (paragraphs +
-     a 17-line invoice list) - the compact inline .say style doesn't fit
-     it. This variant keeps the same "here's what to paste" look but with
-     paragraph spacing and a taller copy target. */
-  .say--prompt {
-    font-style: normal;
-    max-height: 340px;
-    overflow-y: auto;
-  }
-  .say--prompt p { margin: 0 0 10px; }
-  .say--prompt p:last-child { margin-bottom: 0; }
-  .say--prompt .invoice-lines { margin: 0 0 10px; line-height: 1.7; }
-  .say--prompt::before { display: block; margin-bottom: 8px; }
-  /* Holds the byte-exact paste text (real newlines between paragraphs and
-     invoice lines) that the visible, HTML-formatted .say--prompt above is
-     built from - the copy button reads from here, not from the formatted
-     version, so copying never depends on how <p>/<br> boundaries collapse
-     when read back via textContent. */
   .raw-copy-source { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
-  code {
-    background: var(--gray-100);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 13px;
-    border: 1px solid var(--gray-300);
+  footer {
+    margin-top: 24px; padding: 14px 16px; background: white;
+    border: 1px solid var(--gray-300); border-radius: 6px;
+    font-size: 13px; color: var(--gray-500);
   }
-  .callout {
-    padding: 14px 16px;
-    border-radius: 6px;
-    margin: 16px 0;
-    font-size: 14px;
-  }
-  .callout.warn {
-    background: var(--amber-bg);
-    border: 1px solid var(--amber-border);
-  }
-  .callout.warn strong { color: #92400e; }
-  .callout.info {
-    background: #eff6ff;
-    border: 1px solid #bfdbfe;
-  }
-  .callout.info strong { color: var(--blue); }
-  .dont-click {
-    display: inline-block;
-    background: var(--red-bg);
-    color: var(--red);
-    padding: 1px 8px;
-    border-radius: 10px;
-    font-size: 12px;
-    font-weight: 700;
-    margin-left: 6px;
-  }
-  table { width: 100%; border-collapse: collapse; margin: 16px 0; background: white; border-radius: 6px; overflow: hidden; border: 1px solid var(--gray-300); }
-  th, td { text-align: left; padding: 10px 12px; font-size: 14px; border-bottom: 1px solid var(--gray-300); }
-  th { background: var(--gray-100); font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--gray-500); }
-  tr:last-child td { border-bottom: none; }
-  footer { text-align: center; color: var(--gray-500); font-size: 13px; margin-top: 48px; }
-  .open-demo-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--blue);
-    color: white;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 15px;
-    padding: 12px 22px;
-    border-radius: 8px;
-    margin-top: 20px;
-  }
-  .open-demo-btn:hover { background: #1d4ed8; }
-  .open-demo-btn svg { width: 16px; height: 16px; }
-  .why {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-    padding: 10px 12px;
-    background: #ecfeff;
-    border-left: 3px solid var(--teal);
-    border-radius: 4px;
-    font-size: 13px;
-    color: #155e63;
-  }
-  .why strong { color: var(--teal); white-space: nowrap; }
-  .arc {
-    counter-reset: arcstep;
-    padding: 0;
-    list-style: none;
-    margin: 16px 0 0;
-  }
-  .arc li {
-    counter-increment: arcstep;
-    position: relative;
-    padding: 8px 8px 8px 34px;
-    font-size: 14px;
-  }
-  .arc li::before {
-    content: counter(arcstep);
-    position: absolute;
-    left: 0;
-    top: 8px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--teal);
-    color: white;
-    font-size: 11px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .arc li strong { color: var(--navy); }
+  footer strong { color: var(--navy); }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Presenting the Agency Receivables Demo</h1>
-  <p>Exact click path + exact paste text for recording or live-presenting</p>
+  <h1>Agency Receivables Demo — Cheat Sheet</h1>
   <a class="open-demo-btn" href="https://makyo-gtm.github.io/demos/agency-receivables/" target="_blank" rel="noopener">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
     Open the demo in a new tab
@@ -246,35 +92,10 @@
 </header>
 
 <div class="wrap">
-
-  <div class="callout info">
-    <strong>Before you start:</strong> this is a real, standalone web page, not connected to anything. Use the button above to open the hosted copy in a new tab, or - for recording, since it needs no internet connection once loaded - double-click <code>agency-demo/index.html</code> to open the same page locally in your default browser. Either way it's the exact same file, no install or login either way.
-  </div>
-
-  <h2 style="margin-top:32px;">The script, at a glance</h2>
-  <p style="font-size:14px;color:var(--gray-500);margin-top:-4px;">Five beats. Everything below in sections 1-7 is the click-by-click detail of this same arc - nothing in this guide happens outside these five beats.</p>
-  <ol class="arc">
-    <li><strong>Build it.</strong> Describe the app, hit Start Building, let the AI-builds-it sequence play out. (Sections 1-4)</li>
-    <li><strong>Show what it built.</strong> The reveal, then a tour: Dashboard → Invoices → Clients → Follow-Ups - "it's created this, it's created that." (Section 5)</li>
-    <li><strong>"I think this should change" — tweak one, live, via AI Chat.</strong> Ask for it, watch it apply. (Section 6, first half)</li>
-    <li><strong>"And this too" — tweak two, live, via AI Chat.</strong> Ask for it, watch it apply. (Section 6, second half)</li>
-    <li><strong>Close.</strong> A real, working, customized internal tool, built and tuned in front of them without writing a line of code. (No dedicated section - this is the line to land after section 6, in your own words.)</li>
-  </ol>
-
-  <h2><span class="num">1</span>Page 1 — the Apps list</h2>
-  <ol class="steps">
-    <li>The demo opens straight on the org-level <strong>Apps</strong> list — the real Makyo screen you land on before creating anything, with the left sidebar (Welcome, Apps, Databases, etc.) and two existing app cards.</li>
-    <li>Click <strong>Create New</strong>, top right.</li>
-  </ol>
-
-  <h2><span class="num">2</span>Page 2 — "What would you like to build?"</h2>
-  <ol class="steps">
-    <li>Two cards: <strong>Start from Scratch</strong> and <strong>Generate with AI</strong>. Click <strong>Generate with AI</strong> (the right one).</li>
-  </ol>
-
-  <h2><span class="num">3</span>Page 3 — Describe your app</h2>
-  <ol class="steps">
-    <li>An empty text box (placeholder text only — this is real, matching behavior, not pre-filled) and the Makyo mascot on the right. This is the actual, full prompt originally used to generate this exact app in real Makyo (client list, invoice data, screens, all of it) — not a shortened stand-in. What's pasted here doesn't change anything the demo shows (the "AI builds it" sequence is scripted either way), but it's worth pasting the real thing: it's what someone would see if they looked closely, and it's the same prompt you'd hand real Makyo to get this app again. Paste this into the box:
+  <ol>
+    <li>Click <strong>Create New</strong> <span class="dim">(top right)</span></li>
+    <li>Click <strong>Generate with AI</strong> <span class="dim">(right-hand card)</span></li>
+    <li>Paste into the box:
       <div class="say-wrap">
         <div class="say say--prompt" id="app-prompt-display">
           <p>Build an accounts-receivable / collections tracker for a small web development agency to track which clients owe them money and follow up on overdue payments. This is an internal tool for the agency's own team, not client-facing.</p>
@@ -282,8 +103,7 @@
           <p>Screens I need: (1) An overview/dashboard screen showing total amount outstanding, total amount overdue, and how many invoices are currently overdue — show this however you think best represents it. (2) A table of all invoices, filterable by client and by paid/unpaid status, sortable by due date. (3) A view of overdue invoices organized by their aging bucket (Current / 1-30 / 31-60 / 61-90 / 90+ days overdue) so it's easy to see which are the most urgent — again, however you think best represents that grouping. (4) A per-client screen showing that client's invoices and how much they owe in total. (5) A button on an overdue invoice to log that a payment reminder was sent, which records a new row in Follow-Ups with today's date.</p>
           <p>Use this exact data — don't invent your own clients or invoices, populate the tables with precisely this:</p>
           <p>CLIENTS: (1) Harbor &amp; Vine Wine Bar, hello@harborandvine.com, (206) 555-0114. (2) Meridian Fitness Studio, billing@meridianfitness.com, (206) 555-0177. (3) Bluepeak Retail Co., orders@bluepeakretail.com, (206) 555-0142. (4) Nolan &amp; Cross Law Group, accounts@nolancrosslaw.com, (206) 555-0199. (5) Cedar Grove Dental, office@cedargrovedental.com, (206) 555-0163. (6) Alta Property Management, ap@altapropertymgmt.com, (206) 555-0128. (7) Sunroot Café, hi@sunrootcafe.com, (206) 555-0155.</p>
-          <p>INVOICES (Client, Description, Amount, Issue Date, Due Date, Paid, Paid Date):</p>
-          <p class="invoice-lines">
+          <p>INVOICES (Client, Description, Amount, Issue Date, Due Date, Paid, Paid Date):<br>
             Harbor &amp; Vine Wine Bar, "Website Redesign — Deposit (50%)", $3750, 2026-06-15, 2026-06-29, Yes, 2026-06-27.<br>
             Harbor &amp; Vine Wine Bar, "Website Redesign — Final Payment on Launch", $3750, 2026-08-01, 2026-08-15, No, (blank).<br>
             Meridian Fitness Studio, "Monthly Hosting &amp; Maintenance Retainer — June", $250, 2026-06-01, 2026-06-10, Yes, 2026-06-09.<br>
@@ -300,8 +120,7 @@
             Alta Property Management, "Website Redesign — Deposit", $2500, 2026-08-01, 2026-08-15, Yes, 2026-08-14.<br>
             Alta Property Management, "Website Redesign — Final Payment", $2500, 2026-09-06, 2026-09-20, No, (blank).<br>
             Sunroot Café, "Monthly Hosting &amp; Maintenance Retainer — August", $150, 2026-08-01, 2026-08-10, Yes, 2026-08-09.<br>
-            Sunroot Café, "Monthly Hosting &amp; Maintenance Retainer — September", $150, 2026-09-01, 2026-09-10, No, (blank).
-          </p>
+            Sunroot Café, "Monthly Hosting &amp; Maintenance Retainer — September", $150, 2026-09-01, 2026-09-10, No, (blank).</p>
           <p>Notice Meridian Fitness Studio paid their June retainer on time, then stopped — July, August, and September are all unpaid in a row. That's deliberate: their retainer quietly lapsed, exactly the kind of thing that happens to real agencies. Keep that pattern intact, don't smooth it out. Keep the theme clean and professional; this is a demo for a business audience, built to feel like it was made for this specific agency, not a generic sample.</p>
         </div>
         <button class="copy-btn" type="button" data-copy-target="app-prompt-raw">
@@ -340,41 +159,13 @@ Sunroot Café, "Monthly Hosting &amp; Maintenance Retainer — September", $150,
 Notice Meridian Fitness Studio paid their June retainer on time, then stopped — July, August, and September are all unpaid in a row. That's deliberate: their retainer quietly lapsed, exactly the kind of thing that happens to real agencies. Keep that pattern intact, don't smooth it out. Keep the theme clean and professional; this is a demo for a business audience, built to feel like it was made for this specific agency, not a generic sample.</textarea>
       </div>
     </li>
-    <li><strong>Start Building</strong> stays greyed out and unclickable until there's text in the box — that's real, matching behavior, not a bug. Once you've pasted the text, it lights up.</li>
-    <li>Click <strong>Start Building</strong>.</li>
-  </ol>
-
-  <h2><span class="num">4</span>The "AI builds it" sequence (~8 seconds)</h2>
-  <ol class="steps">
-    <li>Three panels: a <strong>BUILD STEPS</strong> checklist on the left (8 steps, Understanding your idea → ... → Building your screens, each with AI/SCRIPT badges, plus a running AI USAGE SO FAR tokens/cost counter beneath it), the app summary + Look/theme card in the middle (unchanged throughout), and a live preview panel on the right.</li>
-    <li>The right panel starts as a plain spinner ("Opening your app...") and swaps to an actual miniature preview of the app's own shell partway through, once the last step ("Building your screens") begins.</li>
-    <li>A "YOUR APP IS READY" card appears with a short countdown — click <strong>Open now</strong> to skip ahead, or just let it continue on its own (~4s).</li>
-  </ol>
-
-  <h2><span class="num">5</span>The reveal — inside Makyo's own builder</h2>
-  <ol class="steps">
-    <li>The finished app appears <strong>inside Makyo's own builder/editor chrome</strong> — the same environment a real user would land in after generation, not the app standing alone. Top bar (app name/version, Design/Data toggle, Navigator/Themes/Publish), a left icon rail (AI App Generation, AI Chat, Primitives, Blocks, <strong>Screens</strong> — active, Overlays, Dialogs, Menus, Settings), and the Screens panel listing all 9 real screens with their real tags.</li>
-    <li>The actual app renders in the canvas area on the right, with its own sidebar: <strong>Dashboard</strong>, <strong>Clients</strong>, <strong>Follow-Ups</strong>, <strong>Invoice Items</strong>, <strong>Invoices</strong> — that's the real order, Follow-Ups before Invoices.</li>
-    <li><strong>Dashboard</strong> (the screen you land on): a "Payment status" card, a row of three widgets (invoices-by-month bar chart, follow-up methods donut chart, top clients by outstanding balance), a <strong>Due This Week</strong> card, then recent invoices below.
-      <div class="why"><strong>Why this lands:</strong> the first thing they see is the whole financial picture in one glance, no clicking required — proof it's not just a form-builder, it's a decision-making view. Due This Week is the proactive half of the story (what's coming) next to the reactive half everywhere else (what's already overdue) - both in the same tool, unprompted.</div>
-    </li>
-    <li>Click <strong>Invoices</strong>: the full list in a plain data table — client, amount, paid status, dates, a real <strong>Client Email Lookup</strong> column, and a follow-up action per overdue row.
-      <div class="why"><strong>Why this lands:</strong> grounds the dashboard's summary numbers in real, specific rows - proves the charts aren't decoration, there's an actual usable ledger underneath, with fields (days overdue, aging bucket) nobody had to build by hand.</div>
-    </li>
-    <li>Click <strong>Clients</strong>: one card per client with phone/email icon buttons. Point out <strong>Meridian Fitness Studio</strong> specifically — three months of an unpaid retainer in a row, a realistic "this client's gone quiet" story.
-      <div class="why"><strong>Why this lands:</strong> this is the moment a prospect recognizes their own business in the demo. Everyone running an agency has a Meridian - a client who quietly stopped paying and nobody flagged it. That recognition is worth more than any feature list.</div>
-    </li>
-    <li>Click <strong>Follow-Ups</strong>: every logged reminder, who it was for, how it was sent, and the linked client email.
-      <div class="why"><strong>Why this lands:</strong> closes the loop from "here's a problem" to "here's the tool actually being used to work it" - the difference between a read-only report and an operational tool a team lives in every day.</div>
-    </li>
-    <li><strong>Invoice Items</strong> in the sidebar is real (it exists in the real app's nav) but not wired to a screen in this demo — skip past it, don't click through expecting content.</li>
-  </ol>
-
-  <h2><span class="num">6</span>The live chat-edit moment</h2>
-  <div class="why" style="margin-top:0;margin-bottom:16px;"><strong>Why this beat exists:</strong> beat 2 (the tour) proved the AI built something real. This beat proves it's not a one-shot, frozen result - you can keep talking to it and it keeps responding, live, with no developer in the loop. That's the second "wow," and it's a different one from the first: not "it's fast to build" but "it's fast to change." Two small, deliberately cosmetic asks, back to back - "I think this should change" → it changes → "and this too" → it changes again.</div>
-  <ol class="steps">
-    <li>Click <strong>AI Chat</strong> in the left icon rail. A floating panel opens — matching Makyo's real AI Chat panel exactly (Chat Assistant header, token/credits row, "Editing in the app builder is free" banner) — with a greeting message already in it. This demo makes it actually apply the two tweaks below; the real one doesn't yet, which is exactly why this is worth showing working.</li>
-    <li>Tweak one — paste this and hit Enter or click Send:
+    <li>Click <strong>Start Building</strong></li>
+    <li>Wait ~8s, then click <strong>Open now</strong></li>
+    <li>Click <strong>Invoices</strong> <span class="dim">(app sidebar)</span></li>
+    <li>Click <strong>Clients</strong></li>
+    <li>Click <strong>Follow-Ups</strong></li>
+    <li>Click <strong>AI Chat</strong> <span class="dim">(far-left icon rail)</span></li>
+    <li>Paste, hit Enter:
       <div class="say-wrap">
         <span class="say" id="tweak-1">Can you make the overdue ones stand out more, maybe in red?</span>
         <button class="copy-btn" type="button" data-copy-target="tweak-1">
@@ -383,8 +174,7 @@ Notice Meridian Fitness Studio paid their June retainer on time, then stopped �
         </button>
       </div>
     </li>
-    <li>After about a second, the assistant replies and confirms — the app automatically jumps to the Invoices screen and every overdue row is now highlighted red.</li>
-    <li>Tweak two, right after — paste this:
+    <li>Paste, hit Enter:
       <div class="say-wrap">
         <span class="say" id="tweak-2">Sort it so the most overdue shows up first</span>
         <button class="copy-btn" type="button" data-copy-target="tweak-2">
@@ -393,35 +183,11 @@ Notice Meridian Fitness Studio paid their June retainer on time, then stopped �
         </button>
       </div>
     </li>
-    <li>The list re-sorts live, most overdue invoice at the top. Both tweaks are now visibly applied at once — red highlighting <em>and</em> most-overdue-first ordering, stacked. That's the beat to close on: not just built, not just working, but tuned live to exactly what was asked for.</li>
   </ol>
 
-  <div class="callout info">
-    <strong>Wording is flexible</strong> — you don't have to say it exactly like above. The assistant listens for a few key words per request: "red" / "stand out" / "highlight" for the first one, "sort" / "most overdue" / "order" / "first" for the second. Anything containing one of those works.
-  </div>
-
-  <h2><span class="num">7</span>If something goes off-script</h2>
-  <ol class="steps">
-    <li>If you type something unrelated, the assistant just says "Let me take a look at that..." and nothing changes — try different wording for the same request.</li>
-    <li>To do another take from a clean slate: click <strong>Restart demo</strong> inside the chat panel. This resets the data, the chat, and sends you back to the Dashboard — no need to reload the page.</li>
-    <li>For a completely fresh start (re-plays the "AI builds it" sequence too, back to page 1): just close and re-open <code>index.html</code>, or reload the page.</li>
-  </ol>
-
-  <h2><span class="num">8</span>Quick reference</h2>
-  <table>
-    <tr><th>You want to...</th><th>Do this</th></tr>
-    <tr><td>Highlight overdue invoices in red</td><td>Paste the "red"/"stand out" line into the AI Chat panel (left rail)</td></tr>
-    <tr><td>Sort by most overdue first</td><td>Paste the "sort"/"most overdue" line into the AI Chat panel</td></tr>
-    <tr><td>Reset just the tweaks/data</td><td>"Restart demo" button next to the banner inside the AI Chat panel</td></tr>
-    <tr><td>Reset everything incl. the build sequence</td><td>Reload the page / re-open the file</td></tr>
-  </table>
-
-  <div class="callout warn">
-    <strong>Decorative-only, don't click expecting something to happen:</strong> everything in the builder chrome outside the Screens panel, the AI Chat panel, and the canvas itself (top bar buttons, AI App Generation/Add Primitives headers, every other rail icon, canvas toolbar icons) — plus pagination and search boxes throughout the app, and the sidebar's <strong>Invoice Items</strong> entry. All of these match the real Makyo interface's look, but none of them do anything in this demo. Only the buttons named in sections 1, 2, 3, 5 (nav), and 6 above are wired to real behavior.
-  </div>
-
-  <footer>Standalone build, no server or install required. Technical details are in <code>README.md</code>, alongside <code>index.html</code> in the demo folder.</footer>
-
+  <footer>
+    <strong>Another take:</strong> click <strong>Restart demo</strong> in the chat panel — or reload the page to replay the build sequence too.
+  </footer>
 </div>
 
 <script>
