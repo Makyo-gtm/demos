@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Presenting the Agency Receivables Demo</title>
+<style>
+  :root {
+    --navy: #0f172a;
+    --blue: #2563eb;
+    --teal: #0891b2;
+    --offwhite: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-300: #cbd5e1;
+    --gray-500: #64748b;
+    --red: #dc2626;
+    --red-bg: #fee2e2;
+    --amber-bg: #fffbeb;
+    --amber-border: #f59e0b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--gray-100);
+    color: var(--navy);
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.55;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
+  header {
+    background: var(--navy);
+    color: white;
+    padding: 40px 24px;
+    text-align: center;
+  }
+  header h1 {
+    font-size: 26px;
+    margin: 0 0 8px;
+  }
+  header p {
+    margin: 0;
+    color: #cbd5e1;
+    font-size: 15px;
+  }
+  h2 {
+    font-size: 19px;
+    margin: 40px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--blue);
+  }
+  h2 .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: white;
+    font-size: 14px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  ol.steps { padding-left: 0; list-style: none; counter-reset: step; margin: 0; }
+  ol.steps > li {
+    counter-increment: step;
+    position: relative;
+    padding: 14px 16px 14px 48px;
+    margin-bottom: 8px;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid var(--gray-300);
+  }
+  ol.steps > li::before {
+    content: counter(step);
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .say {
+    display: block;
+    margin-top: 8px;
+    padding: 10px 12px;
+    background: var(--gray-100);
+    border-left: 3px solid var(--blue);
+    border-radius: 4px;
+    font-style: italic;
+    color: #334155;
+    font-size: 14px;
+  }
+  .say::before { content: "Paste: "; font-style: normal; font-weight: 700; color: var(--blue); }
+  code {
+    background: var(--gray-100);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    border: 1px solid var(--gray-300);
+  }
+  .callout {
+    padding: 14px 16px;
+    border-radius: 6px;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .callout.warn {
+    background: var(--amber-bg);
+    border: 1px solid var(--amber-border);
+  }
+  .callout.warn strong { color: #92400e; }
+  .callout.info {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+  }
+  .callout.info strong { color: var(--blue); }
+  .dont-click {
+    display: inline-block;
+    background: var(--red-bg);
+    color: var(--red);
+    padding: 1px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-left: 6px;
+  }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; background: white; border-radius: 6px; overflow: hidden; border: 1px solid var(--gray-300); }
+  th, td { text-align: left; padding: 10px 12px; font-size: 14px; border-bottom: 1px solid var(--gray-300); }
+  th { background: var(--gray-100); font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--gray-500); }
+  tr:last-child td { border-bottom: none; }
+  footer { text-align: center; color: var(--gray-500); font-size: 13px; margin-top: 48px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Presenting the Agency Receivables Demo</h1>
+  <p>Exact click path + exact paste text for recording or live-presenting</p>
+</header>
+
+<div class="wrap">
+
+  <div class="callout info">
+    <strong>Before you start:</strong> this is a real, standalone web page, not connected to anything. No install, no login, no internet needed once the folder is on your machine. It works completely offline. Double-click <code>agency-demo/index.html</code> to open it in your default browser.
+  </div>
+
+  <h2><span class="num">1</span>Page 1 — the Apps list</h2>
+  <ol class="steps">
+    <li>The demo opens straight on the org-level <strong>Apps</strong> list — the real Makyo screen you land on before creating anything, with the left sidebar (Welcome, Apps, Databases, etc.) and two existing app cards.</li>
+    <li>Click <strong>Create New</strong>, top right.</li>
+  </ol>
+
+  <h2><span class="num">2</span>Page 2 — "What would you like to build?"</h2>
+  <ol class="steps">
+    <li>Two cards: <strong>Start from Scratch</strong> and <strong>Generate with AI</strong>. Click <strong>Generate with AI</strong> (the right one).</li>
+  </ol>
+
+  <h2><span class="num">3</span>Page 3 — Describe your app</h2>
+  <ol class="steps">
+    <li>An empty text box (placeholder text only — this is real, matching behavior, not pre-filled) and the Makyo mascot on the right. Paste this into the box:
+      <span class="say">Build a tracker for invoices I've sent to clients — who owes what, whether they've paid, how overdue anything is, and a way to log when I've followed up.</span>
+    </li>
+    <li><strong>Start Building</strong> stays greyed out and unclickable until there's text in the box — that's real, matching behavior, not a bug. Once you've pasted the text, it lights up.</li>
+    <li>Click <strong>Start Building</strong>.</li>
+  </ol>
+
+  <h2><span class="num">4</span>The "AI builds it" sequence (~8 seconds)</h2>
+  <ol class="steps">
+    <li>Three panels: a <strong>BUILD STEPS</strong> checklist on the left (8 steps, Understanding your idea → ... → Building your screens, each with AI/SCRIPT badges, plus a running AI USAGE SO FAR tokens/cost counter beneath it), the app summary + Look/theme card in the middle (unchanged throughout), and a live preview panel on the right.</li>
+    <li>The right panel starts as a plain spinner ("Opening your app...") and swaps to an actual miniature preview of the app's own shell partway through, once the last step ("Building your screens") begins.</li>
+    <li>A "YOUR APP IS READY" card appears with a short countdown — click <strong>Open now</strong> to skip ahead, or just let it continue on its own (~4s).</li>
+  </ol>
+
+  <h2><span class="num">5</span>The reveal — inside Makyo's own builder</h2>
+  <ol class="steps">
+    <li>The finished app appears <strong>inside Makyo's own builder/editor chrome</strong> — the same environment a real user would land in after generation, not the app standing alone. Top bar (app name/version, Design/Data toggle, Navigator/Themes/Publish), a left icon rail (AI App Generation, AI Chat, Primitives, Blocks, <strong>Screens</strong> — active, Overlays, Dialogs, Menus, Settings), and the Screens panel listing all 9 real screens with their real tags.</li>
+    <li>The actual app renders in the canvas area on the right, with its own sidebar: <strong>Dashboard</strong>, <strong>Clients</strong>, <strong>Follow-Ups</strong>, <strong>Invoice Items</strong>, <strong>Invoices</strong> — that's the real order, Follow-Ups before Invoices.</li>
+    <li><strong>Dashboard</strong> (the screen you land on): a "Payment status" card, then a row of three widgets (invoices-by-month bar chart, follow-up methods donut chart, top clients by balance), then recent invoices below.</li>
+    <li>Click <strong>Invoices</strong>: the full list in a plain data table — client, amount, paid status, dates, a real <strong>Client Email Lookup</strong> column, and a follow-up action per overdue row.</li>
+    <li>Click <strong>Clients</strong>: one card per client with phone/email icon buttons. Point out <strong>Meridian Fitness Studio</strong> specifically — three months of an unpaid retainer in a row, a realistic "this client's gone quiet" story.</li>
+    <li>Click <strong>Follow-Ups</strong>: every logged reminder, who it was for, how it was sent, and the linked client email.</li>
+    <li><strong>Invoice Items</strong> in the sidebar is real (it exists in the real app's nav) but not wired to a screen in this demo — skip past it, don't click through expecting content.</li>
+  </ol>
+
+  <h2><span class="num">6</span>The live chat-edit moment</h2>
+  <ol class="steps">
+    <li>Click <strong>AI Chat</strong> in the left icon rail. A floating panel opens — matching Makyo's real AI Chat panel exactly (Chat Assistant header, token/credits row, "Editing in the app builder is free" banner) — with a greeting message already in it. This demo makes it actually apply the two tweaks below; the real one doesn't yet, which is exactly why this is worth showing working.</li>
+    <li>Ask for the first tweak — paste this and hit Enter or click Send:
+      <span class="say">Can you make the overdue ones stand out more, maybe in red?</span>
+    </li>
+    <li>After about a second, the assistant replies and confirms — the app automatically jumps to the Invoices screen and every overdue row is now highlighted red.</li>
+    <li>Ask for the second tweak — paste this:
+      <span class="say">Sort it so the most overdue shows up first</span>
+    </li>
+    <li>The list re-sorts live, most overdue invoice at the top.</li>
+  </ol>
+
+  <div class="callout info">
+    <strong>Wording is flexible</strong> — you don't have to say it exactly like above. The assistant listens for a few key words per request: "red" / "stand out" / "highlight" for the first one, "sort" / "most overdue" / "order" / "first" for the second. Anything containing one of those works.
+  </div>
+
+  <h2><span class="num">7</span>If something goes off-script</h2>
+  <ol class="steps">
+    <li>If you type something unrelated, the assistant just says "Let me take a look at that..." and nothing changes — try different wording for the same request.</li>
+    <li>To do another take from a clean slate: click <strong>Restart demo</strong> inside the chat panel. This resets the data, the chat, and sends you back to the Dashboard — no need to reload the page.</li>
+    <li>For a completely fresh start (re-plays the "AI builds it" sequence too, back to page 1): just close and re-open <code>index.html</code>, or reload the page.</li>
+  </ol>
+
+  <h2><span class="num">8</span>Quick reference</h2>
+  <table>
+    <tr><th>You want to...</th><th>Do this</th></tr>
+    <tr><td>Highlight overdue invoices in red</td><td>Paste the "red"/"stand out" line into the AI Chat panel (left rail)</td></tr>
+    <tr><td>Sort by most overdue first</td><td>Paste the "sort"/"most overdue" line into the AI Chat panel</td></tr>
+    <tr><td>Reset just the tweaks/data</td><td>"Restart demo" button next to the banner inside the AI Chat panel</td></tr>
+    <tr><td>Reset everything incl. the build sequence</td><td>Reload the page / re-open the file</td></tr>
+  </table>
+
+  <div class="callout warn">
+    <strong>Decorative-only, don't click expecting something to happen:</strong> everything in the builder chrome outside the Screens panel, the AI Chat panel, and the canvas itself (top bar buttons, AI App Generation/Add Primitives headers, every other rail icon, canvas toolbar icons) — plus pagination and search boxes throughout the app, and the sidebar's <strong>Invoice Items</strong> entry. All of these match the real Makyo interface's look, but none of them do anything in this demo. Only the buttons named in sections 1, 2, 3, 5 (nav), and 6 above are wired to real behavior.
+  </div>
+
+  <footer>Standalone build, no server or install required. See <code>README.md</code> in this same folder for technical details.</footer>
+
+</div>
+</body>
+</html>
