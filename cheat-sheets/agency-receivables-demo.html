@@ -191,6 +191,47 @@
   }
   .open-demo-btn:hover { background: #1d4ed8; }
   .open-demo-btn svg { width: 16px; height: 16px; }
+  .why {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: #ecfeff;
+    border-left: 3px solid var(--teal);
+    border-radius: 4px;
+    font-size: 13px;
+    color: #155e63;
+  }
+  .why strong { color: var(--teal); white-space: nowrap; }
+  .arc {
+    counter-reset: arcstep;
+    padding: 0;
+    list-style: none;
+    margin: 16px 0 0;
+  }
+  .arc li {
+    counter-increment: arcstep;
+    position: relative;
+    padding: 8px 8px 8px 34px;
+    font-size: 14px;
+  }
+  .arc li::before {
+    content: counter(arcstep);
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .arc li strong { color: var(--navy); }
 </style>
 </head>
 <body>
@@ -209,6 +250,16 @@
   <div class="callout info">
     <strong>Before you start:</strong> this is a real, standalone web page, not connected to anything. Use the button above to open the hosted copy in a new tab, or - for recording, since it needs no internet connection once loaded - double-click <code>agency-demo/index.html</code> to open the same page locally in your default browser. Either way it's the exact same file, no install or login either way.
   </div>
+
+  <h2 style="margin-top:32px;">The script, at a glance</h2>
+  <p style="font-size:14px;color:var(--gray-500);margin-top:-4px;">Five beats. Everything below in sections 1-7 is the click-by-click detail of this same arc - nothing in this guide happens outside these five beats.</p>
+  <ol class="arc">
+    <li><strong>Build it.</strong> Describe the app, hit Start Building, let the AI-builds-it sequence play out. (Sections 1-4)</li>
+    <li><strong>Show what it built.</strong> The reveal, then a tour: Dashboard → Invoices → Clients → Follow-Ups - "it's created this, it's created that." (Section 5)</li>
+    <li><strong>"I think this should change" — tweak one, live, via AI Chat.</strong> Ask for it, watch it apply. (Section 6, first half)</li>
+    <li><strong>"And this too" — tweak two, live, via AI Chat.</strong> Ask for it, watch it apply. (Section 6, second half)</li>
+    <li><strong>Close.</strong> A real, working, customized internal tool, built and tuned in front of them without writing a line of code. (No dedicated section - this is the line to land after section 6, in your own words.)</li>
+  </ol>
 
   <h2><span class="num">1</span>Page 1 — the Apps list</h2>
   <ol class="steps">
@@ -304,17 +355,26 @@ Notice Meridian Fitness Studio paid their June retainer on time, then stopped �
   <ol class="steps">
     <li>The finished app appears <strong>inside Makyo's own builder/editor chrome</strong> — the same environment a real user would land in after generation, not the app standing alone. Top bar (app name/version, Design/Data toggle, Navigator/Themes/Publish), a left icon rail (AI App Generation, AI Chat, Primitives, Blocks, <strong>Screens</strong> — active, Overlays, Dialogs, Menus, Settings), and the Screens panel listing all 9 real screens with their real tags.</li>
     <li>The actual app renders in the canvas area on the right, with its own sidebar: <strong>Dashboard</strong>, <strong>Clients</strong>, <strong>Follow-Ups</strong>, <strong>Invoice Items</strong>, <strong>Invoices</strong> — that's the real order, Follow-Ups before Invoices.</li>
-    <li><strong>Dashboard</strong> (the screen you land on): a "Payment status" card, then a row of three widgets (invoices-by-month bar chart, follow-up methods donut chart, top clients by balance), then recent invoices below.</li>
-    <li>Click <strong>Invoices</strong>: the full list in a plain data table — client, amount, paid status, dates, a real <strong>Client Email Lookup</strong> column, and a follow-up action per overdue row.</li>
-    <li>Click <strong>Clients</strong>: one card per client with phone/email icon buttons. Point out <strong>Meridian Fitness Studio</strong> specifically — three months of an unpaid retainer in a row, a realistic "this client's gone quiet" story.</li>
-    <li>Click <strong>Follow-Ups</strong>: every logged reminder, who it was for, how it was sent, and the linked client email.</li>
+    <li><strong>Dashboard</strong> (the screen you land on): a "Payment status" card, a row of three widgets (invoices-by-month bar chart, follow-up methods donut chart, top clients by outstanding balance), a <strong>Due This Week</strong> card, then recent invoices below.
+      <div class="why"><strong>Why this lands:</strong> the first thing they see is the whole financial picture in one glance, no clicking required — proof it's not just a form-builder, it's a decision-making view. Due This Week is the proactive half of the story (what's coming) next to the reactive half everywhere else (what's already overdue) - both in the same tool, unprompted.</div>
+    </li>
+    <li>Click <strong>Invoices</strong>: the full list in a plain data table — client, amount, paid status, dates, a real <strong>Client Email Lookup</strong> column, and a follow-up action per overdue row.
+      <div class="why"><strong>Why this lands:</strong> grounds the dashboard's summary numbers in real, specific rows - proves the charts aren't decoration, there's an actual usable ledger underneath, with fields (days overdue, aging bucket) nobody had to build by hand.</div>
+    </li>
+    <li>Click <strong>Clients</strong>: one card per client with phone/email icon buttons. Point out <strong>Meridian Fitness Studio</strong> specifically — three months of an unpaid retainer in a row, a realistic "this client's gone quiet" story.
+      <div class="why"><strong>Why this lands:</strong> this is the moment a prospect recognizes their own business in the demo. Everyone running an agency has a Meridian - a client who quietly stopped paying and nobody flagged it. That recognition is worth more than any feature list.</div>
+    </li>
+    <li>Click <strong>Follow-Ups</strong>: every logged reminder, who it was for, how it was sent, and the linked client email.
+      <div class="why"><strong>Why this lands:</strong> closes the loop from "here's a problem" to "here's the tool actually being used to work it" - the difference between a read-only report and an operational tool a team lives in every day.</div>
+    </li>
     <li><strong>Invoice Items</strong> in the sidebar is real (it exists in the real app's nav) but not wired to a screen in this demo — skip past it, don't click through expecting content.</li>
   </ol>
 
   <h2><span class="num">6</span>The live chat-edit moment</h2>
+  <div class="why" style="margin-top:0;margin-bottom:16px;"><strong>Why this beat exists:</strong> beat 2 (the tour) proved the AI built something real. This beat proves it's not a one-shot, frozen result - you can keep talking to it and it keeps responding, live, with no developer in the loop. That's the second "wow," and it's a different one from the first: not "it's fast to build" but "it's fast to change." Two small, deliberately cosmetic asks, back to back - "I think this should change" → it changes → "and this too" → it changes again.</div>
   <ol class="steps">
     <li>Click <strong>AI Chat</strong> in the left icon rail. A floating panel opens — matching Makyo's real AI Chat panel exactly (Chat Assistant header, token/credits row, "Editing in the app builder is free" banner) — with a greeting message already in it. This demo makes it actually apply the two tweaks below; the real one doesn't yet, which is exactly why this is worth showing working.</li>
-    <li>Ask for the first tweak — paste this and hit Enter or click Send:
+    <li>Tweak one — paste this and hit Enter or click Send:
       <div class="say-wrap">
         <span class="say" id="tweak-1">Can you make the overdue ones stand out more, maybe in red?</span>
         <button class="copy-btn" type="button" data-copy-target="tweak-1">
@@ -324,7 +384,7 @@ Notice Meridian Fitness Studio paid their June retainer on time, then stopped �
       </div>
     </li>
     <li>After about a second, the assistant replies and confirms — the app automatically jumps to the Invoices screen and every overdue row is now highlighted red.</li>
-    <li>Ask for the second tweak — paste this:
+    <li>Tweak two, right after — paste this:
       <div class="say-wrap">
         <span class="say" id="tweak-2">Sort it so the most overdue shows up first</span>
         <button class="copy-btn" type="button" data-copy-target="tweak-2">
@@ -333,7 +393,7 @@ Notice Meridian Fitness Studio paid their June retainer on time, then stopped �
         </button>
       </div>
     </li>
-    <li>The list re-sorts live, most overdue invoice at the top.</li>
+    <li>The list re-sorts live, most overdue invoice at the top. Both tweaks are now visibly applied at once — red highlighting <em>and</em> most-overdue-first ordering, stacked. That's the beat to close on: not just built, not just working, but tuned live to exactly what was asked for.</li>
   </ol>
 
   <div class="callout info">
